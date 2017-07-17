@@ -1,15 +1,16 @@
 <template lang="pug">
   <div class="main-content">
-    .category(v-for="num in 8")
+    .category(v-for="entry in user.content")
       h1 Blog posts
-      ul
-        li.list-entry(v-for="post in user.blogposts")
+      p(v-if="entry.type === 'text'") {{entry.data}}
+      ul(v-else-if="entry.type === 'list'")
+        li.list-entry(v-for="post in entry.data")
           a(href="/")
             b {{post.title}}
             span
               u.spacer &nbsp; &nbsp;
             i {{post.subText}}
-      a(href="/") click for {{10}} more
+      a(v-if="entry.type === 'list'", href="/") click for {{10}} more
   </div>
 </template>
 
@@ -22,16 +23,25 @@ export default {
       user: {
         name: 'Rutger Willems',
         shortBio: 'I am a work in progress',
-        blogposts: [
+        content: [
           {
-            title: 'Functional programming 101',
-            link: '/',
-            subText: 'The basics of the hot and new trend in javascript, all the cool kids are using it blah blah'
+            type: 'text',
+            data: 'Welcome to the test version of ResuLite'
           },
           {
-            title: 'Why you should take naps at work',
-            link: '/',
-            subText: 'A 40-minute naps seems to increase productivity by a staggering 400%, recent research in Straussberg indicates'
+            type: 'list',
+            data: [
+              {
+                title: 'Functional programming 101',
+                link: '/',
+                subText: 'The basics of the hot and new trend in javascript, all the cool kids are using it blah blah'
+              },
+              {
+                title: 'Why you should take naps at work',
+                link: '/',
+                subText: 'A 40-minute naps seems to increase productivity by a staggering 400%, recent research in Straussberg indicates'
+              }
+            ]
           }
         ]
       }
