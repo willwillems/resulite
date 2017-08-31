@@ -1,50 +1,51 @@
 <template lang="pug">
-  <div class="main-content">
-    .category(v-for="entry in user.content")
-      h1 Blog posts
-      p(v-if="entry.type === 'text'") {{entry.data}}
-      ul(v-else-if="entry.type === 'list'")
-        li.list-entry(v-for="post in entry.data")
-          a(href="/")
-            b {{post.title}}
-            span
-              u.spacer &nbsp; &nbsp;
-            i {{post.subText}}
-      a(v-if="entry.type === 'list'", href="/") click for {{10}} more
+  .main-content
+    .category(v-for="e in content" v-if="e")
+      h1 {{e.title}}
+      .text-container(v-if="e.type === 'text'")
+        p.text-field(:contenteditable="editModeIsActive") {{e.data}}
+        .button-container(v-if="editModeIsActive")
+          button.button.right EDIT
+      div(v-else-if="e.type === 'list'")
+        ul.side-list
+          li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
+            a(:href="post.link")
+              b {{post.title}}
+              span
+                u.spacer &nbsp; &nbsp;
+              i {{post.subTitle}}
+        // make list smaller when edit mode is active
+        ul.side-list(v-if="editModeIsActive")
+          li(v-for="post in firstTenList(e.data)", v-if="post")
+            .icon-container
+              i.fa.fa-pencil.edit-icon(aria-hidden="true")
+              i.fa.fa-trash.edit-icon(aria-hidden="true")
+        a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
   </div>
 </template>
 
 <script>
 export default {
-  name: 'hello',
+  name: 'main-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js PWA',
-      user: {
-        name: 'Rutger Willems',
-        shortBio: 'I am a work in progress',
-        content: [
-          {
-            type: 'text',
-            data: 'Welcome to the test version of ResuLite'
-          },
-          {
-            type: 'list',
-            data: [
-              {
-                title: 'Functional programming 101',
-                link: '/',
-                subText: 'The basics of the hot and new trend in javascript, all the cool kids are using it blah blah'
-              },
-              {
-                title: 'Why you should take naps at work',
-                link: '/',
-                subText: 'A 40-minute naps seems to increase productivity by a staggering 400%, recent research in Straussberg indicates'
-              }
-            ]
-          }
-        ]
-      }
+      editModeIsActive: true
+    }
+  },
+  created () {
+    console.log(this.$root)
+  },
+  computed: {
+    content () {
+      return this.$root.user.contentList
+    }
+  },
+  methods: {
+    firstTenList (list) {
+      return list.slice(0, 9) // first ten entries
+    },
+    remainingListLenght (list) {
+      return list.slice(9).length
     }
   }
 }
@@ -119,6 +120,36 @@ li {
     opacity: 0.6;
     font-weight: 200;
   }
+}
+
+.side-list {
+  display: inline-block;
+}
+
+.icon-container {
+  display: inline-block;
+}
+
+.edit-icon {
+  display: inline-block;
+  margin: 0px 5px;
+}
+
+.button {
+  background-color: black;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  padding: 5px 15px;
+  font-weight: 700;
+  font-size: 10px;
+  &.right {
+    float: right;
+  }
+}
+
+.text-container {
+  width: 580px;
 }
 
 </style>

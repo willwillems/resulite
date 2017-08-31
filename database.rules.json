@@ -1,0 +1,14 @@
+{
+  "rules": {
+    "$uid": {
+      "pageData": {
+        ".read": "true",
+        ".write": "auth.uid == $uid"
+      },
+      "$other": {
+        ".read": "auth.uid == $uid",
+        ".write": "auth.uid == $uid"
+      }
+    }
+  }
+}

@@ -1,31 +1,40 @@
 <template lang="pug">
-  <div class="left-bar">
-    img.user-headshot(src="./assets/headshot.jpg")
+  .left-bar
+    img.user-headshot(:src="headShot.url")
     p <!-- for spacing-->
       div
-        b.user-name {{user.name}}
+        b.user-name {{name}}
       div
-        i.user-short-bio {{user.shortBio}}
+        i.user-short-bio {{shortBio}}
 
     ul.user-links-list
-      <li><a href="" target="_blank" rel="noopener">Behance</a></li>
-      <li><a href="" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="" target="_blank" rel="noopener">Medium</a></li>
-      <li><a href="" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="" target="_blank" rel="noopener">Email</a></li>
-  </div>
+      li(v-for="e in externalLinks" v-if="e")
+        a(:href="e.link" target="_blank" rel="noopener") {{e.text}}
 </template>
 
 <script>
 export default {
-  name: 'hello',
+  name: 'side-bar',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js PWA',
       user: {
         name: 'Rutger Willems',
         shortBio: 'I am a work in progress'
       }
+    }
+  },
+  computed: {
+    name () {
+      return this.$root.user.displayName
+    },
+    headShot () {
+      return this.$root.user.headShot
+    },
+    shortBio () {
+      return this.$root.user.shortBio
+    },
+    externalLinks () {
+      return this.$root.user.externalLinks.linkList
     }
   }
 }

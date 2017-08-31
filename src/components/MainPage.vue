@@ -2,25 +2,24 @@
   div.main-page 
     side-bar
     main-content
+    editor(v-if="editModeIsActive")
 </template>
 
 <script>
 import SideBar from '@/components/MainPage/SideBar'
 import MainContent from '@/components/MainPage/MainContent'
+import Editor from '@/components/MainPage/Editor'
 
 export default {
-  name: 'hello',
+  name: 'main-page',
   components: {
     SideBar,
-    MainContent
+    MainContent,
+    Editor
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js PWA',
-      user: {
-        name: 'Rutger Willems',
-        shortBio: 'I am a work in progress'
-      }
+      editModeIsActive: true
     }
   }
 }
