@@ -7,7 +7,7 @@
         .button-container(v-if="editModeIsActive")
           button.button.right EDIT
       div(v-else-if="e.type === 'list'")
-        ul.side-list
+        ul.side-list(:class="{'slimer': editModeIsActive}")
           li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
             a(:href="post.link")
               b {{post.title}}
@@ -124,6 +124,10 @@ li {
 
 .side-list {
   display: inline-block;
+}
+
+.side-list.slimer {
+  width: $lists-width - 45px;
 }
 
 .icon-container {
