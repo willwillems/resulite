@@ -4,22 +4,21 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueFire from 'vuefire'
-import firebase from 'firebase'
+
+import fb from '@/script/firebase'
 
 // explicit installation required in module environments
 Vue.use(VueFire)
 Vue.config.productionTip = false
 
-// firebase stuff
-const firebaseApp = firebase.initializeApp({
-  apiKey: 'AIzaSyDjeoHIwrAudOkku5A4ckMqg_Zv2ZIGDT4',
-  authDomain: 'resulite.firebaseapp.com',
-  databaseURL: 'https://resulite.firebaseio.com',
-  projectId: 'resulite',
-  storageBucket: 'resulite.appspot.com',
-  messagingSenderId: '936390334505'
-})
-const db = firebaseApp.database()
+// Firebase
+const db = fb.database()
+const auth = fb.auth()
+
+auth.signInWithEmailAndPassword('test@t.com', 'Test123')
+  .catch(function (e) {
+    console.log(e)
+  })
 
 // get first url argument
 // const firstPath = window.location.pathname.split('/')[1]
