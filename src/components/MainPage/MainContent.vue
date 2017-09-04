@@ -1,7 +1,7 @@
 <template lang="pug">
   .main-content
     .category(v-for="e in content" v-if="e")
-      h1 {{e.title}}
+      h1.entry-title {{e.title}}
       .text-container(v-if="e.type === 'text'")
         p.text-field(:contenteditable="editModeIsActive") {{e.data}}
         .button-container(v-if="editModeIsActive")
@@ -58,7 +58,7 @@ $lists-width: 580px;
 
 h1 {
   font-size: 55px;
-  margin: 30px 0px;
+  margin: 20px 0px;
 }
 
 h1, h2 {
