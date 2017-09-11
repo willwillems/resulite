@@ -14,7 +14,17 @@ const createContentEntry = (path, {data, title}) => {
     })
 }
 
+const deleteListEntry = (path, {entryKey, listEntryKey}) => {
+  return db
+    .ref(`${path}/${c.DB_PAGEDATA}/${c.DB_CONTENTLIST}`)
+    .child(entryKey)
+    .chidl(c.DB_DATA_ATTR)
+    .child(listEntryKey)
+    .remove()
+}
+
 export default {
-  createContentEntry
+  createContentEntry,
+  deleteListEntry
 }
 
