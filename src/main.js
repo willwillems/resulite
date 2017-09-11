@@ -21,8 +21,8 @@ auth.signInWithEmailAndPassword('test@t.com', 'Test123')
   })
 
 // get first url argument
-// const firstPath = window.location.pathname.split('/')[1]
-const subDomain = window.location.hostname.split('.')[0]
+const firstPath = window.location.pathname.split('/')[1]
+// const subDomain = window.location.hostname.split('.')[0]
 
 /* eslint-disable no-new */
 new Vue({
@@ -35,7 +35,7 @@ new Vue({
     // anArray: db.ref('url/to/my/collection').limitToLast(25)
     // full syntax
     user: {
-      source: db.ref(`${subDomain}/pageData`),
+      source: db.ref(`${firstPath}/pageData`),
       // optionally bind as an object
       asObject: true,
       // optionally provide the cancelCallback
