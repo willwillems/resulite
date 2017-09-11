@@ -3,6 +3,7 @@ export default {
   DB_CONTENTLIST: 'contentList',
   DB_ENTRY_TEXT: 'text',
   DB_ENTRY_LIST: 'list',
+  DB_DATA_ATTR: 'data',
   FIREBASE_CONFIG: {
     apiKey: 'AIzaSyDjeoHIwrAudOkku5A4ckMqg_Zv2ZIGDT4',
     authDomain: 'resulite.firebaseapp.com',
