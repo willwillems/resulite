@@ -2,6 +2,7 @@
   <div id="app">
     <main>
       <router-view v-if="$root.user.displayName"></router-view>
+      <landing-page v-else-if="false"></landing-page>
       <div v-else class="user-not-found-container">
         <div class="user-not-found">
           <h1>Sorry user not found </h1>
@@ -13,8 +14,13 @@
 </template>
 
 <script>
+import LandingPage from '@/components/LandingPage'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    LandingPage
+  }
 }
 </script>
 
