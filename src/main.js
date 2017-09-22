@@ -1,9 +1,10 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import VueFire from 'vuefire'
 import App from './App'
 import router from './router'
-import VueFire from 'vuefire'
+import store from './store'
 
 import fb from '@/script/firebase'
 
@@ -16,6 +17,11 @@ const db = fb.database()
 const auth = fb.auth()
 
 auth.signInWithEmailAndPassword('test@t.com', 'Test123')
+  .then(() => {
+    store.commit('setLoginStatus', {
+      status: true
+    })
+  })
   .catch(function (e) {
     console.log(e)
   })
@@ -28,6 +34,7 @@ const firstPath = window.location.pathname.split('/')[1]
 new Vue({
   el: '#app',
   router,
+  store,
   firebase: {
     // simple syntax, bind as an array by default
     // anArray: db.ref('/'),
