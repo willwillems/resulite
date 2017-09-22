@@ -1,10 +1,10 @@
 <template lang="pug">
   .editor
-    transition(name="show-up")
-      #1.small-button(v-if="editModeIsActive")
+    transition(name="show-up-1")
+      .small-button(v-if="editModeIsActive")
         i.fa.fa-list.edit-icon(title="list" aria-hidden="true")
-    transition(name="show-up")
-      #2.small-button(v-if="editModeIsActive")
+    transition(name="show-up-2")
+      .small-button(v-if="editModeIsActive")
         i.fa.fa-align-justify.edit-icon(title="text" aria-hidden="true")
     .big-button(@click="toggleEditMode")
       i.fa.fa-pencil.edit-icon(aria-hidden="true")
@@ -53,6 +53,7 @@ $big-button-radius: 60px;
 .small-button, .big-button {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   transition: box-shadow 0.5s;
+  z-index: 2; // so the smaller ones can hide behind the bigger one
   &:hover {
     box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
   }
@@ -83,18 +84,23 @@ $big-button-radius: 60px;
 
 // vue transistions:
 
-.show-up-enter-active, .show-up-leave-active {
-  transition: transform 0.2s ease-out;
-  transform: none;
+.show-up-1-enter-active, .show-up-1-leave-active {
+  transition: all 0.4s ease-out;
+  transform: translateY(0px);
 }
 
-.show-up-enter, .show-up-leave-to {
-  opacity: 0;
-  #1 {
-    transform: translateY(30px)
-  }
-  #1 {
-    transform: translateY(15px)
-  }
+.show-up-1-enter, .show-up-1-leave-to {
+  transform: translateY(120px);
+}
+
+.show-up-2-enter-active, .show-up-2-leave-active {
+  transition: all 0.4s ease-out;
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.show-up-2-enter, .show-up-2-leave-to {
+  z-index: -10;
+  transform: translateY(60px);
 }
 </style>
