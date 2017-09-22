@@ -12,10 +12,10 @@ export default {
       state.editModeIsActive = newState
     },
     toggleEditModal (state) {
-      state.editModeIsActive = !state.editModeIsActive
+      state.editModalIsActive = !state.editModalIsActive
     },
     setEditModal (state, {newState}) {
-      state.editModeIsActive = newState
+      state.editModalIsActive = newState
     },
     setLoginStatus (state, {status}) {
       state.userIsLoggedIn = status
