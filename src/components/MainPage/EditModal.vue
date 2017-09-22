@@ -4,37 +4,83 @@
     #exit-button(@click="toggleModal") x
     .modal 
       h1 Edit.
-      textarea(v-if="modalTypeIsText")
-      .input-container
+      textarea(v-if="editModalTypeIsText" v-model="textInput") {{textData}}
+      .input-container(v-else)
         .title Title
-        input.input
+        input.input(v-model="listInput.title" :placeholder="listData.title")
         .title Subtitle
-        input.input
+        input.input(v-model="listInput.subTitle" :placeholder="listData.subTitle")
         .title Link
-        input.input
+        input.input(v-model="listInput.link" :placeholder="listData.link")
       #done-button(@click="finishModal") DONE
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
+import c from '@/script/constants'
+
 export default {
   name: 'EditModal',
   data: function () {
     return {
+      textInput: '',
+      listInput: {}
     }
   },
+  created () {
+    this.textInput = this.textData
+    this.listInput = JSON.parse(JSON.stringify(this.listData)) // we don't want to pass by refrence
+  },
   computed: {
-    modalTypeIsText () {
-      return false
-    }
+    textData () {
+      return this.$root.user[c.DB_CONTENTLIST][this.editModalContentKey][c.DB_DATA_ATTR]
+    },
+    listData () {
+      return this.$root.user[c.DB_CONTENTLIST][this.editModalContentKey][c.DB_DATA_ATTR][this.editModalEntryKey]
+    },
+    editDataRef () {
+      return this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .child(this.editModalContentKey)
+        .child(c.DB_DATA_ATTR)
+    },
+    ...mapState({
+      userPath: state => state.appState.userPath,
+      editModalContentKey: state => state.appState.editModalContentKey,
+      editModalEntryKey: state => state.appState.editModalEntryKey,
+      editModalTypeIsText: state => state.appState.editModalTypeIsText
+    })
   },
   methods: {
     toggleModal () {
       this.$store.commit('toggleEditModal')
     },
     finishModal () {
-      this.$store.commit('setEditModal', {
-        newState: false
-      })
+      if (this.textInput === this.textData && this.listInput === this.listData) {
+        this.$store.commit('setEditModal', {
+          newState: false
+        })
+        return // nothing to see here move along
+      }
+      if (this.editModalTypeIsText) {
+        this.editDataRef
+          .update(this.textInput)
+          .then(() => {
+            this.$store.commit('setEditModal', {
+              newState: false
+            })
+          })
+      } else {
+        this.editDataRef
+          .child(this.editModalEntryKey)
+          .update(this.listInput)
+          .then(() => {
+            this.$store.commit('setEditModal', {
+              newState: false
+            })
+          })
+      }
     }
   }
 }

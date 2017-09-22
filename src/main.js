@@ -11,6 +11,7 @@ import fb from '@/script/firebase'
 // explicit installation required in module environments
 Vue.use(VueFire)
 Vue.config.productionTip = false
+Vue.config.devtools = true
 
 // Firebase
 const db = fb.database()
@@ -52,5 +53,10 @@ new Vue({
     }
   },
   template: '<App/>',
-  components: { App }
+  components: { App },
+  created () {
+    this.$store.commit('setUserPath', {
+      path: firstPath
+    })
+  }
 })

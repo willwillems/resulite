@@ -1,11 +1,11 @@
 <template lang="pug">
   .main-content
-    .category(v-for="e in content" v-if="e")
+    .category(v-for="(e, postKey, i) in content" v-if="e")
       h1.entry-title {{e.title}}
       .text-container(v-if="e.type === 'text'")
         p.text-field(:contenteditable="editModeIsActive") {{e.data}}
         .button-container(v-if="editModeIsActive")
-          button.button.right(@click="activateEditModal(e)") EDIT
+          button.button.right(@click="activateEditModal(postKey)") EDIT
       div(v-else-if="e.type === 'list'")
         ul.side-list(:class="{'slimer': editModeIsActive}")
           li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
@@ -16,16 +16,18 @@
               i {{post.subTitle}}
         // make list smaller when edit mode is active
         ul.side-list(v-if="editModeIsActive")
-          li(v-for="post in firstTenList(e.data)", v-if="post")
+          li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
-              i.fa.fa-pencil.edit-icon(@click="activateEditModal(e, post)" aria-hidden="true")
-              i.fa.fa-trash.edit-icon(@click="" aria-hidden="true")
+              i.fa.fa-pencil.edit-icon(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
+              i.fa.fa-trash.edit-icon(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+
+import c from '@/script/constants'
 
 export default {
   name: 'main-content',
@@ -34,7 +36,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$root)
   },
   computed: {
     content () {
@@ -46,15 +47,32 @@ export default {
   },
   methods: {
     firstTenList (list) {
-      return list.slice(0, 9) // first ten entries
+      let newObject = {}
+      let i = 0
+      for (let key in list) {
+        newObject[key] = list[key]
+        i++
+        if (i === 10) return newObject // first ten entries
+      }
+      return newObject
     },
     remainingListLenght (list) {
-      return list.slice(9).length
+      return Object.values(list).slice(9).length
     },
-    activateEditModal () {
+    activateEditModal (postKey, entryKey) {
       this.$store.commit('setEditModal', {
-        newState: true
+        newState: true,
+        postKey,
+        entryKey
       })
+    },
+    deleteEntry (pkey, ekey) {
+      this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .child(pkey)
+        .child(c.DB_DATA_ATTR)
+        .child(ekey)
+        .remove()
     }
   }
 }
