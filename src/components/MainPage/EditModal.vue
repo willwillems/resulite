@@ -2,7 +2,17 @@
   .main
     .overlay
     #exit-button(@click="toggleModal") x
-    .modal EDIT
+    .modal 
+      h1 Edit.
+      textarea(v-if="modalTypeIsText")
+      .input-container
+        .title Title
+        input.input
+        .title Subtitle
+        input.input
+        .title Link
+        input.input
+      #done-button(@click="finishModal") DONE
 </template>
 
 <script>
@@ -12,9 +22,19 @@ export default {
     return {
     }
   },
+  computed: {
+    modalTypeIsText () {
+      return false
+    }
+  },
   methods: {
     toggleModal () {
       this.$store.commit('toggleEditModal')
+    },
+    finishModal () {
+      this.$store.commit('setEditModal', {
+        newState: false
+      })
     }
   }
 }
@@ -45,10 +65,46 @@ export default {
   top: calc(50vh - 200px);
   left: calc(50vw - 250px);
   width: 500px; // this should be responsive
-  height: 400px;
+  // height: 400px;
   padding: 20px;
+  padding-bottom: 50px; // for the edit button
   z-index: 10;
   background-color: white;
+  h1 {
+    font-size: 4rem;
+    margin: 20px 0px;
+    &:nth-child(1) {
+      margin-top: 0px;
+    }
+  }
+  textarea {
+    width: 100%;
+    height: 200px;
+  }
+  .input-container {
+    margin: 10px 0px;
+    .title {
+      font-style: italic;
+      font-size: 0.7em;
+      padding: 0.5em 0em;
+    }
+  }
+  .input {
+    width: 100%;
+    height: 1.5em;
+    border-radius: 3px;
+    border: solid gray 1px;
+  }
+}
 
+#done-button {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  padding: 5px 20px;
+  background-color: black;
+  color: white;
+  font-weight: 500;
+  border-radius: 3px;
 }
 </style>
