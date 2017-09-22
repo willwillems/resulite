@@ -5,7 +5,7 @@
       .text-container(v-if="e.type === 'text'")
         p.text-field(:contenteditable="editModeIsActive") {{e.data}}
         .button-container(v-if="editModeIsActive")
-          button.button.right EDIT
+          button.button.right(@click="activateEditModal(e)") EDIT
       div(v-else-if="e.type === 'list'")
         ul.side-list(:class="{'slimer': editModeIsActive}")
           li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
@@ -18,8 +18,8 @@
         ul.side-list(v-if="editModeIsActive")
           li(v-for="post in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
-              i.fa.fa-pencil.edit-icon(aria-hidden="true")
-              i.fa.fa-trash.edit-icon(aria-hidden="true")
+              i.fa.fa-pencil.edit-icon(@click="activateEditModal(e, post)" aria-hidden="true")
+              i.fa.fa-trash.edit-icon(@click="" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
   </div>
 </template>
@@ -50,6 +50,11 @@ export default {
     },
     remainingListLenght (list) {
       return list.slice(9).length
+    },
+    activateEditModal () {
+      this.$store.commit('setEditModal', {
+        newState: true
+      })
     }
   }
 }
