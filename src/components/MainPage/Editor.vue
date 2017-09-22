@@ -1,21 +1,33 @@
 <template lang="pug">
   .editor
-    .small-button
-      i.fa.fa-list.edit-icon(title="list" aria-hidden="true")
-    .small-button
-      i.fa.fa-align-justify.edit-icon(title="text" aria-hidden="true")
-    .big-button
+    transition(name="show-up")
+      #1.small-button(v-if="editModeIsActive")
+        i.fa.fa-list.edit-icon(title="list" aria-hidden="true")
+    transition(name="show-up")
+      #2.small-button(v-if="editModeIsActive")
+        i.fa.fa-align-justify.edit-icon(title="text" aria-hidden="true")
+    .big-button(@click="toggleEditMode")
       i.fa.fa-pencil.edit-icon(aria-hidden="true")
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'editor',
   data: function () {
     return {
     }
   },
+  computed: {
+    ...mapState({
+      editModeIsActive: state => state.appState.editModeIsActive
+    })
+  },
   methods: {
+    toggleEditMode () {
+      this.$store.commit('toggleEditMode')
+    }
   }
 }
 </script>
@@ -66,6 +78,23 @@ $big-button-radius: 60px;
     color: white;
     font-size: 30px;
     margin: 14px 18px;
+  }
+}
+
+// vue transistions:
+
+.show-up-enter-active, .show-up-leave-active {
+  transition: transform 0.2s ease-out;
+  transform: none;
+}
+
+.show-up-enter, .show-up-leave-to {
+  opacity: 0;
+  #1 {
+    transform: translateY(30px)
+  }
+  #1 {
+    transform: translateY(15px)
   }
 }
 </style>

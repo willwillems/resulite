@@ -17,7 +17,7 @@
         // make list smaller when edit mode is active
         ul.side-list(v-if="editModeIsActive")
           li(v-for="post in firstTenList(e.data)", v-if="post")
-            .icon-container
+            .icon-container(v-if="editModeIsActive")
               i.fa.fa-pencil.edit-icon(aria-hidden="true")
               i.fa.fa-trash.edit-icon(aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
@@ -25,11 +25,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'main-content',
   data () {
     return {
-      editModeIsActive: true
     }
   },
   created () {
@@ -38,7 +39,10 @@ export default {
   computed: {
     content () {
       return this.$root.user.contentList
-    }
+    },
+    ...mapState({
+      editModeIsActive: state => state.appState.editModeIsActive
+    })
   },
   methods: {
     firstTenList (list) {

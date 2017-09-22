@@ -2,24 +2,40 @@
   div.main-page 
     side-bar
     main-content
-    editor(v-if="editModeIsActive")
+    editor(v-if="userIsLoggedIn")
+    edit-modal(v-if="editModalIsActive")
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import SideBar from '@/components/MainPage/SideBar'
 import MainContent from '@/components/MainPage/MainContent'
 import Editor from '@/components/MainPage/Editor'
+import EditModal from '@/components/MainPage/EditModal'
 
 export default {
   name: 'main-page',
   components: {
     SideBar,
     MainContent,
-    Editor
+    Editor,
+    EditModal
   },
   data () {
     return {
-      editModeIsActive: true
+    }
+  },
+  computed: {
+    ...mapState({
+      editModeIsActive: state => state.appState.editModeIsActive,
+      editModalIsActive: state => state.appState.editModalIsActive,
+      userIsLoggedIn: state => state.appState.userIsLoggedIn
+    })
+  },
+  methods: {
+    toggleModal () {
+      this.$store.commit('toggleEditModal')
     }
   }
 }
