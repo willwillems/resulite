@@ -21,6 +21,8 @@
               i.fa.fa-pencil.edit-icon(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
               i.fa.fa-trash.edit-icon(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
+        .add-entry(v-if="editModeIsActive" @click="addListEntry(postKey)")
+          i.fa.fa-plus
   </div>
 </template>
 
@@ -66,13 +68,31 @@ export default {
         entryKey
       })
     },
-    deleteEntry (pkey, ekey) {
+    deleteEntry (postKey, entryKey) {
       this.$root.$firebaseRefs.user
         .child(c.DB_CONTENTLIST)
-        .child(pkey)
+        .child(postKey)
         .child(c.DB_DATA_ATTR)
-        .child(ekey)
+        .child(entryKey)
         .remove()
+    },
+    addListEntry (postKey) {
+      // create new blank entry en store key in var
+      const entryKey = this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .child(postKey)
+        .child(c.DB_DATA_ATTR)
+        .push({
+          title: '',
+          subTitle: '',
+          link: ''
+        }).key
+      // open edit modal with new entry
+      this.$store.commit('setEditModal', {
+        newState: true,
+        postKey,
+        entryKey
+      })
     }
   }
 }
@@ -181,6 +201,10 @@ li {
 
 .text-container {
   width: 580px;
+}
+
+.add-entry {
+  margin: -0.6em 0px; // kinda hacky, this is to prevent shifing when edit mode is enabled
 }
 
 </style>
