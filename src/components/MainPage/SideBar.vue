@@ -1,6 +1,11 @@
 <template lang="pug">
   .left-bar
-    img.user-headshot(:src="headShot.url")
+    img.user-headshot(
+      :src="newImg || headShot.url" 
+      :class="{'drag-over': dragOver }"
+      @dragover="handleDragOver" 
+      @dragleave="handleDragLeave" 
+      @drop="handleDrop")
     p <!-- for spacing-->
       div
         b.user-name {{name}}
@@ -10,6 +15,8 @@
     ul.user-links-list
       li(v-for="e in externalLinks" v-if="e")
         a(:href="e.link" target="_blank" rel="noopener") {{e.text}}
+      i.fa.fa-pencil
+      //i.fa.fa-plus
 </template>
 
 <script>
@@ -17,6 +24,8 @@ export default {
   name: 'side-bar',
   data () {
     return {
+      dragOver: false,
+      newImg: '',
       user: {
         name: 'Rutger Willems',
         shortBio: 'I am a work in progress'
@@ -35,6 +44,28 @@ export default {
     },
     externalLinks () {
       return this.$root.user.externalLinks.linkList
+    }
+  },
+  methods: {
+    handleDragOver (evt) {
+      this.dragOver = true
+      evt.stopPropagation()
+      evt.preventDefault()
+      evt.dataTransfer.dropEffect = 'copy'
+    },
+    handleDragLeave (evt) {
+      this.dragOver = false
+    },
+    handleDrop (evt) {
+      evt.stopPropagation()
+      evt.preventDefault()
+      this.dragOver = false
+      const files = evt.dataTransfer.files  // FileList object.
+      const file = files[0]                 // File     object.
+      const _URL = window.URL || window.webkitURL
+      this.newImg = _URL.createObjectURL(file)
+      console.log(file)
+      // TODO: upload file to FB
     }
   }
 }
@@ -75,6 +106,9 @@ a {
   height: $headshot-diameter;
   border-radius: 50%;
   margin: auto;
+  &.drag-over {
+    opacity: 0.6;
+  }
 }
 
 .user-name {
