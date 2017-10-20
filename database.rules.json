@@ -1,13 +1,13 @@
 {
   "rules": {
-    "$uid": {
+    "$id": {
       "pageData": {
         ".read": "true",
-        ".write": "auth.uid == $uid"
+        ".write": "auth.uid == root.child($id).child('uid').val()"
       },
       "$other": {
-        ".read": "auth.uid == $uid",
-        ".write": "auth.uid == $uid"
+        ".read": "auth.uid == root.child($id).child('uid').val()",
+        ".write": "auth.uid == root.child($id).child('uid').val()"
       }
     }
   }
