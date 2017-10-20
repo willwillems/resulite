@@ -15,21 +15,11 @@ Vue.config.devtools = true
 
 // Firebase
 const db = fb.database()
-const auth = fb.auth()
-
-auth.signInWithEmailAndPassword('test@t.com', 'Test123')
-  .then(() => {
-    store.commit('setLoginStatus', {
-      status: true
-    })
-  })
-  .catch(function (e) {
-    console.log(e)
-  })
 
 // get first url argument
-const firstPath = window.location.pathname.split('/')[1]
-// const subDomain = window.location.hostname.split('.')[0]
+// const firstPath = window.location.pathname.split('/')[1]
+const subs = window.location.hostname.split('.')
+const subDomain = subs.length !== 1 && subs[0] // there has to be a subdomain, if so return it
 
 /* eslint-disable no-new */
 new Vue({
@@ -43,7 +33,7 @@ new Vue({
     // anArray: db.ref('url/to/my/collection').limitToLast(25)
     // full syntax
     user: {
-      source: db.ref(`${firstPath}/pageData`),
+      source: db.ref(`${subDomain}/pageData`),
       // optionally bind as an object
       asObject: true,
       // optionally provide the cancelCallback
@@ -56,7 +46,7 @@ new Vue({
   components: { App },
   created () {
     this.$store.commit('setUserPath', {
-      path: firstPath
+      path: subDomain
     })
   }
 })

@@ -1,14 +1,8 @@
 <template>
   <div id="app">
     <main>
-      <router-view v-if="$root.user.displayName"></router-view>
+      <router-view v-if="true"></router-view>
       <landing-page v-else-if="false"></landing-page>
-      <div v-else class="user-not-found-container">
-        <div class="user-not-found">
-          <h1>Sorry user not found </h1>
-          <span> but you can register an account <a href="/"> here </a> </span>
-        </div>
-      </div>
     </main>
   </div>
 </template>
@@ -38,17 +32,5 @@ body {
 
 main {
   text-align: left;
-}
-
-.user-not-found-container {
-  position: relative;
-  height: 80vh;
-}
-
-.user-not-found {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>
