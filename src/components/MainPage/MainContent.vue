@@ -1,11 +1,24 @@
 <template lang="pug">
   .main-content
     .category(v-for="(e, postKey, i) in content" v-if="e")
-      h1.entry-title {{e.title}}
+      h1.entry-title
+        span(
+          :contenteditable="editModeIsActive" 
+          @input=`scheduleChange({
+            postKey, 
+            attr: 'title',
+            val: $event.target.innerText
+          })`
+        ) {{e.title}}
       .text-container(v-if="e.type === 'text'")
-        p.text-field(:contenteditable="editModeIsActive") {{e.data}}
-        .button-container(v-if="editModeIsActive")
-          button.button.right(@click="activateEditModal(postKey)") EDIT
+        p.text-field(
+          :contenteditable="editModeIsActive"
+          @input=`scheduleChange({
+            postKey, 
+            attr: 'data',
+            val: $event.target.innerText
+          })`
+        ) {{e.data}}
       div(v-else-if="e.type === 'list'")
         ul.side-list(:class="{'slimer': editModeIsActive}")
           li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
@@ -48,7 +61,7 @@ export default {
     })
   },
   methods: {
-    firstTenList (list) {
+    firstTenList (list = {}) {
       let newObject = {}
       let i = 0
       for (let key in list) {
@@ -58,7 +71,7 @@ export default {
       }
       return newObject
     },
-    remainingListLenght (list) {
+    remainingListLenght (list = {}) {
       return Object.values(list).slice(9).length
     },
     activateEditModal (postKey, entryKey) {
@@ -92,6 +105,23 @@ export default {
         newState: true,
         postKey,
         entryKey
+      })
+    },
+    deletePost (postKey) {
+      this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .child(postKey)
+        .remove()
+      // open edit modal with new entry
+    },
+    editPost (postKey) {
+      console.log('editposy')
+    },
+    scheduleChange ({postKey, attr, val}) {
+      console.log(arguments)
+      this.$store.commit('scheduleChange', {
+        path: `contentList/${postKey}/${attr}/`,
+        newVal: val
       })
     }
   }
@@ -156,7 +186,15 @@ li {
 }
 
 .category {
+  position: relative; // so we can absolutely pos els in div
   margin: 10px;
+}
+
+.entry-title {
+  span:focus { 
+    outline: none; // removes the default grey border, generaly a bad idea
+    color: black;
+  }
 }
 
 .list-entry {
@@ -184,6 +222,9 @@ li {
 .edit-icon {
   display: inline-block;
   margin: 0px 5px;
+  &:hover {
+    color: #fc4f4f;
+  }
 }
 
 .button {
@@ -200,11 +241,26 @@ li {
 }
 
 .text-container {
-  width: 580px;
+  width: $lists-width;
+  p:focus { 
+    outline: none; // removes the default grey border, generaly a bad idea
+    color: black;
+  }
 }
 
 .add-entry {
   margin: -0.6em 0px; // kinda hacky, this is to prevent shifing when edit mode is enabled
+}
+
+.edit-button {
+  display:inline-block;
+  font-size: 25px;
+  line-height: 45px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: bottom;
+  color: grey;
 }
 
 </style>

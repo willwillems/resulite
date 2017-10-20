@@ -4,15 +4,15 @@
     #exit-button(@click="toggleModal") x
     .modal 
       h1 Edit.
-      textarea(v-if="editModalTypeIsText" v-model="textInput") {{textData}}
+      textarea(v-if="editModalTypeIsText" v-model="textInput" ref="text") {{textData}}
       .input-container(v-else)
         .title Title
-        input.input(v-model="listInput.title" :placeholder="listData.title")
+        input.input(v-model="listInput.title" :placeholder="listData.title" ref="list")
         .title Subtitle
         input.input(v-model="listInput.subTitle" :placeholder="listData.subTitle")
         .title Link
         input.input(v-model="listInput.link" :placeholder="listData.link")
-      #done-button(@click="finishModal") DONE
+      button#done-button(@click="finishModal") DONE
 </template>
 
 <script>
@@ -30,7 +30,11 @@ export default {
   },
   created () {
     this.textInput = this.textData
-    this.listInput = JSON.parse(JSON.stringify(this.listData)) // we don't want to pass by refrence
+    this.listInput = JSON.parse(JSON.stringify(this.listData || {})) // we don't want to pass by refrence
+  },
+  mounted () {
+    if (this.editModalTypeIsText) this.$refs.text.focus()
+    else this.$refs.list.focus()
   },
   computed: {
     textData () {
@@ -43,7 +47,6 @@ export default {
       return this.$root.$firebaseRefs.user
         .child(c.DB_CONTENTLIST)
         .child(this.editModalContentKey)
-        .child(c.DB_DATA_ATTR)
     },
     ...mapState({
       userPath: state => state.appState.userPath,
@@ -64,8 +67,11 @@ export default {
         return // nothing to see here move along
       }
       if (this.editModalTypeIsText) {
+        console.log(this.textInput)
         this.editDataRef
-          .update(this.textInput)
+          .update({
+            data: this.textInput
+          })
           .then(() => {
             this.$store.commit('setEditModal', {
               newState: false
@@ -73,6 +79,7 @@ export default {
           })
       } else {
         this.editDataRef
+          .child(c.DB_DATA_ATTR)
           .child(this.editModalEntryKey)
           .update(this.listInput)
           .then(() => {
@@ -150,6 +157,7 @@ export default {
   padding: 5px 20px;
   background-color: black;
   color: white;
+  border: none;
   font-weight: 500;
   border-radius: 3px;
 }

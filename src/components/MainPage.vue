@@ -4,6 +4,7 @@
     main-content
     editor(v-if="userIsLoggedIn")
     edit-modal(v-if="editModalIsActive")
+    save-button(v-if="editModeIsActive && changesMade")
 </template>
 
 <script>
@@ -13,6 +14,7 @@ import SideBar from '@/components/MainPage/SideBar'
 import MainContent from '@/components/MainPage/MainContent'
 import Editor from '@/components/MainPage/Editor'
 import EditModal from '@/components/MainPage/EditModal'
+import SaveButton from '@/components/MainPage/SaveButton'
 
 export default {
   name: 'main-page',
@@ -20,7 +22,8 @@ export default {
     SideBar,
     MainContent,
     Editor,
-    EditModal
+    EditModal,
+    SaveButton
   },
   data () {
     return {
@@ -30,7 +33,8 @@ export default {
     ...mapState({
       editModeIsActive: state => state.appState.editModeIsActive,
       editModalIsActive: state => state.appState.editModalIsActive,
-      userIsLoggedIn: state => state.appState.userIsLoggedIn
+      userIsLoggedIn: state => state.appState.userIsLoggedIn,
+      changesMade: state => Object.keys(state.appState.scheduledChanges).length !== 0
     })
   },
   methods: {

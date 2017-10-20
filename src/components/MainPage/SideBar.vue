@@ -8,9 +8,21 @@
       @drop="handleDrop")
     p <!-- for spacing-->
       div
-        b.user-name {{name}}
+        b.user-name(
+          :contenteditable="editModeIsActive" 
+          @input=`scheduleChange({
+            attr: 'DB_NAME_ATTR',
+            val: $event.target.innerText
+          })`
+        ) {{name}}
       div
-        i.user-short-bio {{shortBio}}
+        i.user-short-bio(
+          :contenteditable="editModeIsActive" 
+          @input=`scheduleChange({
+            attr: 'DB_BIO_ATTR',
+            val: $event.target.innerText
+          })`
+        ) {{shortBio}}
 
     ul.user-links-list
       li(v-for="e in externalLinks" v-if="e")
@@ -20,6 +32,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
+import c from '@/script/constants'
+
 export default {
   name: 'side-bar',
   data () {
@@ -44,7 +60,10 @@ export default {
     },
     externalLinks () {
       return this.$root.user.externalLinks.linkList
-    }
+    },
+    ...mapState({
+      editModeIsActive: state => state.appState.editModeIsActive
+    })
   },
   methods: {
     handleDragOver (evt) {
@@ -66,6 +85,13 @@ export default {
       this.newImg = _URL.createObjectURL(file)
       console.log(file)
       // TODO: upload file to FB
+    },
+    scheduleChange ({attr, val}) {
+      console.log(c)
+      this.$store.commit('scheduleChange', {
+        path: `${c[attr]}/`,
+        newVal: val
+      })
     }
   }
 }
@@ -114,10 +140,18 @@ a {
 .user-name {
   font-size: 30px;
   font-weight: 700;
+  &:focus { 
+    outline: none; // removes the default grey border, generaly a bad idea
+    color: black;
+  }
 }
 
 .user-short-bio {
   font-weight: 100;
+  &:focus { 
+    outline: none; // removes the default grey border, generaly a bad idea
+    color: black;
+  }
 }
 
 .user-links-list {

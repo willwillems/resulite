@@ -1,10 +1,10 @@
 <template lang="pug">
   .editor
     transition(name="show-up-1")
-      .small-button(v-if="editModeIsActive")
+      .small-button(v-if="editModeIsActive" @click="addList")
         i.fa.fa-list.edit-icon(title="list" aria-hidden="true")
     transition(name="show-up-2")
-      .small-button(v-if="editModeIsActive")
+      .small-button(v-if="editModeIsActive" @click="addText")
         i.fa.fa-align-justify.edit-icon(title="text" aria-hidden="true")
     .big-button(@click="toggleEditMode")
       i.fa.fa-pencil.edit-icon(aria-hidden="true")
@@ -12,6 +12,8 @@
 
 <script>
 import { mapState } from 'vuex'
+
+import c from '@/script/constants'
 
 export default {
   name: 'editor',
@@ -27,6 +29,31 @@ export default {
   methods: {
     toggleEditMode () {
       this.$store.commit('toggleEditMode')
+    },
+    addList () {
+      // create new blank entry en store key in var
+      this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .push({
+          title: 'new list',
+          data: {},
+          type: c.DB_ENTRY_LIST
+        }).key
+    },
+    addText () {
+      // create new blank entry en store key in var
+      const postKey = this.$root.$firebaseRefs.user
+        .child(c.DB_CONTENTLIST)
+        .push({
+          title: 'new text',
+          data: '',
+          type: c.DB_ENTRY_TEXT
+        }).key
+      // open edit modal with new entry
+      this.$store.commit('setEditModal', {
+        newState: true,
+        postKey
+      })
     }
   }
 }

@@ -1,4 +1,8 @@
-// import c from '@/script/constants'
+import fb from '@/script/firebase'
+import c from '@/script/constants'
+
+// Firebase DB
+const db = fb.database()
 
 export default {
   state: {
@@ -8,7 +12,8 @@ export default {
     editModalEntryKey: '',
     editModalTypeIsText: true,
     userPath: '',
-    userIsLoggedIn: false
+    userIsLoggedIn: false,
+    scheduledChanges: {}
   },
   mutations: {
     setUserPath (state, {path}) {
@@ -31,10 +36,29 @@ export default {
     },
     setLoginStatus (state, {status}) {
       state.userIsLoggedIn = status
+    },
+    scheduleChange (state, {path, newVal}) {
+      // this should remove attr if there are changed back to original
+      state.scheduledChanges[`${state.userPath}/${c.DB_PAGEDATA}/${path}`] = newVal
+    },
+    clearScheduledChanges (state) {
+      state.scheduledChanges = {}
     }
   },
   getters: {
   },
   actions: {
+    saveChanges ({ state, commit }) {
+      const changes = state.scheduledChanges
+      let promises = []
+      Object.keys(changes).forEach(key => {
+        promises.push(
+          db.ref(`${key}`)
+            .set(changes[key])
+            .then(console.log)
+        )
+      })
+      Promise.all(promises).then(commit.clearScheduledChanges)
+    }
   }
 }
