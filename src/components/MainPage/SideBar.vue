@@ -27,7 +27,7 @@
     ul.user-links-list
       li(v-for="e in externalLinks" v-if="e")
         a(:href="e.link" target="_blank" rel="noopener") {{e.text}}
-      i.fa.fa-pencil
+      //i.fa.fa-pencil
       //i.fa.fa-plus
 </template>
 
