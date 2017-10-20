@@ -87,7 +87,6 @@ export default {
       // TODO: upload file to FB
     },
     scheduleChange ({attr, val}) {
-      console.log(c)
       this.$store.commit('scheduleChange', {
         path: `${c[attr]}/`,
         newVal: val

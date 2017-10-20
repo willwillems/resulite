@@ -55,7 +55,6 @@ export default {
         promises.push(
           db.ref(`${key}`)
             .set(changes[key])
-            .then(console.log)
         )
       })
       Promise.all(promises).then(commit.clearScheduledChanges)

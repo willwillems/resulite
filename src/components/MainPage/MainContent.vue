@@ -114,11 +114,7 @@ export default {
         .remove()
       // open edit modal with new entry
     },
-    editPost (postKey) {
-      console.log('editposy')
-    },
     scheduleChange ({postKey, attr, val}) {
-      console.log(arguments)
       this.$store.commit('scheduleChange', {
         path: `contentList/${postKey}/${attr}/`,
         newVal: val
