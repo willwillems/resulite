@@ -2,6 +2,14 @@
 
 > Easy simple and quick online rusume/personal page
 
+# TODO
+
+- Switch all scss to BEM
+- Common vars scss file
+- link list add + remove + edit
+- Register
+- First use tour
+
 ## Build Setup
 
 ``` bash
