@@ -1,14 +1,14 @@
 <template lang="pug">
   .left-bar
-    img.user-headshot(
+    img.left-bar__user-headshot(
       :src="newImg || headShot.url" 
-      :class="{'drag-over': dragOver }"
+      :class="{'left-bar__user-headshot--drag-over': dragOver }"
       @dragover="handleDragOver" 
       @dragleave="handleDragLeave" 
       @drop="handleDrop")
     p <!-- for spacing-->
       div
-        b.user-name(
+        b.left-bar__user-name(
           :contenteditable="editModeIsActive" 
           @input=`scheduleChange({
             attr: 'DB_NAME_ATTR',
@@ -16,7 +16,7 @@
           })`
         ) {{name}}
       div
-        i.user-short-bio(
+        i.left-bar__user-short-bio(
           :contenteditable="editModeIsActive" 
           @input=`scheduleChange({
             attr: 'DB_BIO_ATTR',
@@ -24,7 +24,7 @@
           })`
         ) {{shortBio}}
 
-    ul.user-links-list
+    ul.left-bar__user-links-list
       li(v-for="e in externalLinks" v-if="e")
         a(:href="e.link" target="_blank" rel="noopener") {{e.text}}
       //i.fa.fa-pencil
@@ -94,71 +94,69 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-$side-bar-width: 350px;
-$headshot-diameter: 170px;
+  $side-bar-width: 350px;
+  $headshot-diameter: 170px;
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 5px;
-}
-
-li {
-  margin: 15px 10px;
-  a{
-    text-decoration: none;
+  h1, h2 {
+    font-weight: normal;
   }
-}
 
-a {
-  color: #35495E;
-}
-
-.left-bar {
-  width: $side-bar-width;
-  text-align: center;
-}
-
-.user-headshot {
-  width: $headshot-diameter;
-  height: $headshot-diameter;
-  border-radius: 50%;
-  margin: auto;
-  &.drag-over {
-    opacity: 0.6;
+  ul {
+    list-style-type: none;
+    padding: 5px;
   }
-}
 
-.user-name {
-  font-size: 30px;
-  font-weight: 700;
-  &:focus { 
-    outline: none; // removes the default grey border, generaly a bad idea
-    color: black;
-  }
-}
-
-.user-short-bio {
-  font-weight: 100;
-  &:focus { 
-    outline: none; // removes the default grey border, generaly a bad idea
-    color: black;
-  }
-}
-
-.user-links-list {
-  font-size: 18px;
-  font-weight: 500;
   li {
-    transition: opacity .5s ease;
-    opacity: 0.71;
-    &:hover {
-      opacity: 0.9;
+    margin: 15px 10px;
+    a{
+      text-decoration: none;
     }
   }
-  
-}
+
+  a {
+    color: #35495E;
+  }
+
+  .left-bar {
+    width: $side-bar-width;
+    text-align: center;
+    &__user-headshot {
+      width: $headshot-diameter;
+      height: $headshot-diameter;
+      border-radius: 50%;
+      margin: auto;
+      &--drag-over {
+        opacity: 0.6;
+      }
+    }
+    &__user-name {
+      font-size: 30px;
+      font-weight: 700;
+      &:focus { 
+        outline: none; // removes the default grey border, generaly a bad idea
+        color: black;
+      }
+    }
+
+    &__user-short-bio {
+      font-weight: 100;
+      &:focus { 
+        outline: none; // removes the default grey border, generaly a bad idea
+        color: black;
+      }
+    }
+
+    &__user-links-list {
+      font-size: 18px;
+      font-weight: 500;
+      li {
+        transition: opacity .5s ease;
+        opacity: 0.71;
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+      
+    }
+  }
 </style>
