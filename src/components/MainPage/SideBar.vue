@@ -41,11 +41,7 @@ export default {
   data () {
     return {
       dragOver: false,
-      newImg: '',
-      user: {
-        name: 'Rutger Willems',
-        shortBio: 'I am a work in progress'
-      }
+      newImg: ''
     }
   },
   computed: {
