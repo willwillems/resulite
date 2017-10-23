@@ -40,11 +40,14 @@ export default {
       // this needs some... ehh.. work
       return this.$store.state.appState.userPath
     },
+    changesMade () {
+      return Object.keys(this.changes).length
+    },
     ...mapState({
       editModeIsActive: state => state.appState.editModeIsActive,
       editModalIsActive: state => state.appState.editModalIsActive,
       userIsLoggedIn: state => state.appState.userIsLoggedIn,
-      changesMade: state => (Object.keys(state.appState.scheduledChanges).length !== 0)
+      changes: state => state.appState.scheduledChanges
     })
   },
   methods: {

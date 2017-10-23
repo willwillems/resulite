@@ -39,7 +39,11 @@ export default {
     },
     scheduleChange (state, {path, newVal}) {
       // this should remove attr if there are changed back to original
-      state.scheduledChanges[`${state.userPath}/${c.DB_PAGEDATA}/${path}`] = newVal
+      // This might look akward but cannot set prop direct cuz not reactive
+      state.scheduledChanges = {
+        ...state.scheduledChanges,
+        [`${state.userPath}/${c.DB_PAGEDATA}/${path}`]: newVal
+      }
     },
     clearScheduledChanges (state) {
       state.scheduledChanges = {}
