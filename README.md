@@ -1,6 +1,8 @@
-# resulite
+# Resulite
 
-> Easy simple and quick online rusume/personal page
+[![Build Status](https://travis-ci.org/NickolasBoyer/resulite.svg?branch=master)](https://travis-ci.org/NickolasBoyer/resulite)
+
+Easy simple and quick online resume/personal page. Currently under heavy development
 
 # TODO
 

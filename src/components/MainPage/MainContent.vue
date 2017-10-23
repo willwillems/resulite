@@ -203,7 +203,7 @@ li {
   &__list {
     display: inline-block;
     &--slimmer {
-      width: $lists-width - 45px;
+      width: $lists-width - 55px;
     }
     &__post {
       b {
