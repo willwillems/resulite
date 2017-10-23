@@ -44,7 +44,7 @@ export default {
       editModeIsActive: state => state.appState.editModeIsActive,
       editModalIsActive: state => state.appState.editModalIsActive,
       userIsLoggedIn: state => state.appState.userIsLoggedIn,
-      changesMade: state => Object.keys(state.appState.scheduledChanges).length !== 0
+      changesMade: state => (Object.keys(state.appState.scheduledChanges).length !== 0)
     })
   },
   methods: {
