@@ -1,7 +1,7 @@
 <template lang="pug">
   .main-content
-    .category(v-for="(e, postKey, i) in content" v-if="e")
-      h1.entry-title
+    .entry(v-for="(e, postKey, i) in content" v-if="e")
+      h1.entry__title
         span(
           :contenteditable="editModeIsActive" 
           @input=`scheduleChange({
@@ -10,8 +10,8 @@
             val: $event.target.innerText
           })`
         ) {{e.title}}
-      .text-container(v-if="e.type === 'text'")
-        p.text-field(
+      .entry__text-container(v-if="e.type === 'text'")
+        p(
           :contenteditable="editModeIsActive"
           @input=`scheduleChange({
             postKey, 
@@ -20,15 +20,15 @@
           })`
         ) {{e.data}}
       div(v-else-if="e.type === 'list'")
-        ul.side-list(:class="{'slimer': editModeIsActive}")
-          li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
+        ul.entry__list(:class="{'entry__list--slimmer': editModeIsActive}")
+          li.entry__list__post(v-for="post in firstTenList(e.data)", v-if="post")
             a(:href="post.link")
               b {{post.title}}
               span
                 u.spacer &nbsp; &nbsp;
               i {{post.subTitle}}
         // make list smaller when edit mode is active
-        ul.side-list(v-if="editModeIsActive")
+        ul.entry__list(v-if="editModeIsActive")
           li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
               i.fa.fa-pencil.edit-icon(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
@@ -181,34 +181,40 @@ li {
   }
 }
 
-.category {
+.entry {
   position: relative; // so we can absolutely pos els in div
   margin: 10px;
-}
 
-.entry-title {
-  span:focus { 
-    outline: none; // removes the default grey border, generaly a bad idea
-    color: black;
+  &__title {
+    span:focus { 
+      outline: none; // removes the default grey border, generaly a bad idea
+      color: black;
+    }
   }
-}
 
-.list-entry {
-  b {
-    opacity: 0.91;
+  &__text-container {
+    width: $lists-width;
+    p:focus { 
+      outline: none; // removes the default grey border, generaly a bad idea
+      color: black;
+    }
   }
-  i {
-    opacity: 0.6;
-    font-weight: 200;
+
+  &__list {
+    display: inline-block;
+    &--slimmer {
+      width: $lists-width - 45px;
+    }
+    &__post {
+      b {
+        opacity: 0.91;
+      }
+      i {
+        opacity: 0.6;
+        font-weight: 200;
+      }
+    }
   }
-}
-
-.side-list {
-  display: inline-block;
-}
-
-.side-list.slimer {
-  width: $lists-width - 45px;
 }
 
 .icon-container {
@@ -223,40 +229,8 @@ li {
   }
 }
 
-.button {
-  background-color: black;
-  border: none;
-  border-radius: 3px;
-  color: white;
-  padding: 5px 15px;
-  font-weight: 700;
-  font-size: 10px;
-  &.right {
-    float: right;
-  }
-}
-
-.text-container {
-  width: $lists-width;
-  p:focus { 
-    outline: none; // removes the default grey border, generaly a bad idea
-    color: black;
-  }
-}
-
 .add-entry {
   margin: -0.6em 0px; // kinda hacky, this is to prevent shifing when edit mode is enabled
-}
-
-.edit-button {
-  display:inline-block;
-  font-size: 25px;
-  line-height: 45px;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  vertical-align: bottom;
-  color: grey;
 }
 
 </style>
