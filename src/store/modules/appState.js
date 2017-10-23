@@ -57,7 +57,7 @@ export default {
             .set(changes[key])
         )
       })
-      Promise.all(promises).then(commit.clearScheduledChanges)
+      Promise.all(promises).then(() => commit('clearScheduledChanges'))
     }
   }
 }
