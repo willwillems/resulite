@@ -1,13 +1,13 @@
 <template lang="pug">
   .editor
     transition(name="show-up-1")
-      .small-button(v-if="editModeIsActive" @click="addList")
-        i.fa.fa-list.edit-icon(title="list" aria-hidden="true")
+      .editor__button.editor__button--small(v-if="editModeIsActive" @click="addList")
+        i.fa.fa-list.icon(title="list" aria-hidden="true")
     transition(name="show-up-2")
-      .small-button(v-if="editModeIsActive" @click="addText")
-        i.fa.fa-align-justify.edit-icon(title="text" aria-hidden="true")
-    .big-button(@click="toggleEditMode")
-      i.fa.fa-pencil.edit-icon(aria-hidden="true")
+      .editor__button.editor__button--small(v-if="editModeIsActive" @click="addText")
+        i.fa.fa-align-justify.icon(title="text" aria-hidden="true")
+    .editor__button.editor__button--big(@click="toggleEditMode")
+      i.fa.fa-pencil.icon(aria-hidden="true")
 </template>
 
 <script>
@@ -75,37 +75,37 @@ $big-button-radius: 60px;
   & > * { // all children
     margin: 10px;
   }
-}
 
-.small-button, .big-button {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  transition: box-shadow 0.5s;
-  z-index: 2; // so the smaller ones can hide behind the bigger one
-  &:hover {
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  }
-}
+  &__button {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    transition: box-shadow 0.5s;
+    z-index: 2; // so the smaller ones can hide behind the bigger one
+    &:hover {
+      box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
 
-.small-button {
-  width: $small-button-radius;
-  height: $small-button-radius;
-  border-radius: 50%;
-  background-color: gray;
-  i {
-    color: whitesmoke;
-    margin: 12px 12px;
-  }
-}
+    &--small {
+      width: $small-button-radius;
+      height: $small-button-radius;
+      border-radius: 50%;
+      background-color: gray;
+      .icon {
+        color: whitesmoke;
+        margin: 12px 12px;
+      }
+    }
 
-.big-button {
-  width: $big-button-radius;
-  height: $big-button-radius;
-  border-radius: 50%;
-  background-color: black;
-  i {
-    color: white;
-    font-size: 30px;
-    margin: 14px 18px;
+    &--big {
+      width: $big-button-radius;
+      height: $big-button-radius;
+      border-radius: 50%;
+      background-color: black;
+      .icon {
+        color: white;
+        font-size: 30px;
+        margin: 14px 18px;
+      }
+    }
   }
 }
 
