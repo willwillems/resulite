@@ -118,6 +118,7 @@ export default {
   top: calc(50vh - 200px);
   left: calc(50vw - 250px);
   width: 500px; // this should be responsive
+  max-width: 80vw;
   // height: 400px;
   padding: 20px;
   padding-bottom: 50px; // for the edit button
