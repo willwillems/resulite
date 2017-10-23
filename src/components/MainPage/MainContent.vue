@@ -28,7 +28,7 @@
                 u.spacer &nbsp; &nbsp;
               i {{post.subTitle}}
         // make list smaller when edit mode is active
-        ul.entry__list(v-if="editModeIsActive")
+        ul.entry__list.entry__list--buttons(v-if="editModeIsActive")
           li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
               i.fa.fa-pencil.edit-icon(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
@@ -204,6 +204,9 @@ li {
     display: inline-block;
     &--slimmer {
       width: $lists-width - 55px;
+    }
+    &--buttons {
+      position: absolute;
     }
     &__post {
       b {
