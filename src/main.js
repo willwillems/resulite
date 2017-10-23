@@ -15,6 +15,7 @@ Vue.config.devtools = true
 
 // Firebase
 const db = fb.database()
+const auth = fb.auth()
 
 // get first url argument
 // const firstPath = window.location.pathname.split('/')[1]
@@ -45,8 +46,18 @@ new Vue({
   template: '<App/>',
   components: { App },
   created () {
+    // Set user for current page
     this.$store.commit('setUserPath', {
       path: subDomain
+    })
+    // Check if user is logged in
+    var that = this
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        that.$store.commit('setLoginStatus', {
+          status: true
+        })
+      }
     })
   }
 })
