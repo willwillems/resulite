@@ -19,7 +19,7 @@
             val: $event.target.innerText
           })`
         ) {{e.data}}
-      div(v-else-if="e.type === 'list'")
+      div.list-container(v-else-if="e.type === 'list'")
         ul.side-list(:class="{'slimer': editModeIsActive}")
           li.list-entry(v-for="post in firstTenList(e.data)", v-if="post")
             a(:href="post.link")
@@ -193,6 +193,10 @@ li {
   }
 }
 
+.list-container {
+  white-space: nowrap;
+}
+
 .list-entry {
   b {
     opacity: 0.91;
@@ -208,7 +212,7 @@ li {
 }
 
 .side-list.slimer {
-  width: $lists-width - 45px;
+  width: $lists-width - 55px;
 }
 
 .icon-container {
