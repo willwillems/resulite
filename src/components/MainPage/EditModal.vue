@@ -4,14 +4,13 @@
     #exit-button(@click="toggleModal") x
     .modal 
       h1 Edit.
-      textarea(v-if="editModalTypeIsText" v-model="textInput" ref="text") {{textData}}
-      .input-container(v-else)
+      .modal__input-container
         .title Title
-        input.input(v-model="listInput.title" :placeholder="listData.title" ref="list")
+        input.modal__input(v-model="listInput.title" :placeholder="listData.title" ref="list")
         .title Subtitle
-        input.input(v-model="listInput.subTitle" :placeholder="listData.subTitle")
+        input.modal__input(v-model="listInput.subTitle" :placeholder="listData.subTitle")
         .title Link
-        input.input(v-model="listInput.link" :placeholder="listData.link")
+        input.modal__input(v-model="listInput.link" :placeholder="listData.link")
       button#done-button(@click="finishModal") DONE
 </template>
 
@@ -24,12 +23,10 @@ export default {
   name: 'EditModal',
   data: function () {
     return {
-      textInput: '',
       listInput: {}
     }
   },
   created () {
-    this.textInput = this.textData
     this.listInput = JSON.parse(JSON.stringify(this.listData || {})) // we don't want to pass by refrence
   },
   mounted () {
@@ -37,9 +34,6 @@ export default {
     else this.$refs.list.focus()
   },
   computed: {
-    textData () {
-      return this.$root.user[c.DB_CONTENTLIST][this.editModalContentKey][c.DB_DATA_ATTR]
-    },
     listData () {
       return this.$root.user[c.DB_CONTENTLIST][this.editModalContentKey][c.DB_DATA_ATTR][this.editModalEntryKey]
     },
@@ -60,34 +54,21 @@ export default {
       this.$store.commit('toggleEditModal')
     },
     finishModal () {
-      if (this.textInput === this.textData && this.listInput === this.listData) {
+      if (this.listInput === this.listData) {
         this.$store.commit('setEditModal', {
           newState: false
         })
         return // nothing to see here move along
       }
-      if (this.editModalTypeIsText) {
-        console.log(this.textInput)
-        this.editDataRef
-          .update({
-            data: this.textInput
+      this.editDataRef
+        .child(c.DB_DATA_ATTR)
+        .child(this.editModalEntryKey)
+        .update(this.listInput)
+        .then(() => {
+          this.$store.commit('setEditModal', {
+            newState: false
           })
-          .then(() => {
-            this.$store.commit('setEditModal', {
-              newState: false
-            })
-          })
-      } else {
-        this.editDataRef
-          .child(c.DB_DATA_ATTR)
-          .child(this.editModalEntryKey)
-          .update(this.listInput)
-          .then(() => {
-            this.$store.commit('setEditModal', {
-              newState: false
-            })
-          })
-      }
+        })
     }
   }
 }
@@ -135,7 +116,7 @@ export default {
     width: 100%;
     height: 200px;
   }
-  .input-container {
+  &__input-container {
     margin: 10px 0px;
     .title {
       font-style: italic;
@@ -143,7 +124,7 @@ export default {
       padding: 0.5em 0em;
     }
   }
-  .input {
+  &__input {
     width: 100%;
     height: 1.5em;
     border-radius: 3px;
