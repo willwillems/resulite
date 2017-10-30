@@ -31,11 +31,11 @@
         ul.entry__list.entry__list--buttons(v-if="editModeIsActive")
           li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
-              i.fa.fa-pencil.edit-icon(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
-              i.fa.fa-trash.edit-icon(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
+              i.fa.fa-pencil.edit-icon.clickable(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
+              i.fa.fa-trash.edit-icon.clickable(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
         .add-entry(v-if="editModeIsActive" @click="addListEntry(postKey)")
-          i.fa.fa-plus
+          i.fa.fa-plus.clickable
   </div>
 </template>
 
@@ -230,6 +230,10 @@ li {
   &:hover {
     color: #fc4f4f;
   }
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 .add-entry {
