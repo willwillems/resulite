@@ -6,11 +6,11 @@ Easy simple and quick online resume/personal page. Currently under heavy develop
 
 # TODO
 
-- Switch all scss to BEM
 - Common vars scss file
 - link list add + remove + edit
 - Register
 - First use tour
+- Remove edit icon links make clickable
 
 ## Build Setup
 
