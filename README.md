@@ -6,10 +6,7 @@ Easy simple and quick online resume/personal page. Currently under heavy develop
 
 # TODO
 
-<<<<<<< HEAD
 - Common vars scss file
-=======
->>>>>>> 6a219b1e9c23996ef8092d1704762a394d667b29
 - link list add + remove + edit
 - Register
 - First use tour
