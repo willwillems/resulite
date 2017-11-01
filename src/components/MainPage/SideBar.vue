@@ -27,8 +27,10 @@
     ul.left-bar__user-links-list
       li(v-for="e in externalLinks" v-if="e")
         a(:href="e.link" target="_blank" rel="noopener") {{e.text}}
-      //i.fa.fa-pencil
-      //i.fa.fa-plus
+      .left-bar__list-edit-button(
+        v-if="editModeIsActive",
+        @click="toggleLinkListModal"
+      ) EDIT
 </template>
 
 <script>
@@ -62,6 +64,9 @@ export default {
     })
   },
   methods: {
+    toggleLinkListModal () {
+      console.log('link list modal not built yet :)')
+    },
     handleDragOver (evt) {
       this.dragOver = true
       evt.stopPropagation()
@@ -157,6 +162,20 @@ export default {
         }
       }
       
+    }
+
+    &__list-edit-button {
+      height: 10px;
+      width: 40px;
+      margin: 30px ($side-bar-width/2 - 20px - 15px -5px); // - 1/2width - padding
+      padding: 5px 15px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 10px;
+      cursor: pointer;
     }
   }
 </style>
