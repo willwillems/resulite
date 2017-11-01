@@ -10,6 +10,7 @@ Easy simple and quick online resume/personal page. Currently under heavy develop
 - link list add + remove + edit
 - Register
 - First use tour
+- Add photo icon overlay in edit mode
 
 ## Build Setup
 
