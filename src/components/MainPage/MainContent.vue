@@ -21,8 +21,13 @@
         ) {{e.data}}
       div(v-else-if="e.type === 'list'")
         ul.entry__list(:class="{'entry__list--slimmer': editModeIsActive}")
-          li.entry__list__post(v-for="post in firstTenList(e.data)", v-if="post")
-            a(:href="post.link")
+          li.entry__list__post(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
+            a.clickable(v-if="editModeIsActive" @click="activateEditModal(postKey, entryKey)")
+              b {{post.title}}
+              span
+                u.spacer &nbsp; &nbsp;
+              i {{post.subTitle}}
+            a(v-else :href="post.link")
               b {{post.title}}
               span
                 u.spacer &nbsp; &nbsp;
@@ -31,7 +36,6 @@
         ul.entry__list.entry__list--buttons(v-if="editModeIsActive")
           li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             .icon-container(v-if="editModeIsActive")
-              i.fa.fa-pencil.edit-icon.clickable(@click="activateEditModal(postKey, entryKey)" aria-hidden="true")
               i.fa.fa-trash.edit-icon.clickable(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
         .add-entry(v-if="editModeIsActive" @click="addListEntry(postKey)")
