@@ -130,8 +130,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-$side-bar-width: 350px;
-$lists-width: 580px;
+@import 'src/vars.scss';
 
 h1 {
   font-size: 55px;

@@ -99,83 +99,82 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  $side-bar-width: 350px;
-  $headshot-diameter: 170px;
+@import 'src/vars.scss';
 
-  h1, h2 {
-    font-weight: normal;
+h1, h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 5px;
+}
+
+li {
+  margin: 15px 10px;
+  a{
+    text-decoration: none;
   }
+}
 
-  ul {
-    list-style-type: none;
-    padding: 5px;
+a {
+  color: #35495E;
+}
+
+.left-bar {
+  width: $side-bar-width;
+  text-align: center;
+  &__user-headshot {
+    width: $headshot-diameter;
+    height: $headshot-diameter;
+    border-radius: 50%;
+    margin: auto;
+    &--drag-over {
+      opacity: 0.6;
+    }
   }
-
-  li {
-    margin: 15px 10px;
-    a{
-      text-decoration: none;
+  &__user-name {
+    font-size: 30px;
+    font-weight: 700;
+    &:focus { 
+      outline: none; // removes the default grey border, generaly a bad idea
+      color: black;
     }
   }
 
-  a {
-    color: #35495E;
+  &__user-short-bio {
+    font-weight: 100;
+    &:focus { 
+      outline: none; // removes the default grey border, generaly a bad idea
+      color: black;
+    }
   }
 
-  .left-bar {
-    width: $side-bar-width;
-    text-align: center;
-    &__user-headshot {
-      width: $headshot-diameter;
-      height: $headshot-diameter;
-      border-radius: 50%;
-      margin: auto;
-      &--drag-over {
-        opacity: 0.6;
+  &__user-links-list {
+    font-size: 18px;
+    font-weight: 500;
+    li {
+      transition: opacity .5s ease;
+      opacity: 0.71;
+      &:hover {
+        opacity: 0.9;
       }
     }
-    &__user-name {
-      font-size: 30px;
-      font-weight: 700;
-      &:focus { 
-        outline: none; // removes the default grey border, generaly a bad idea
-        color: black;
-      }
-    }
-
-    &__user-short-bio {
-      font-weight: 100;
-      &:focus { 
-        outline: none; // removes the default grey border, generaly a bad idea
-        color: black;
-      }
-    }
-
-    &__user-links-list {
-      font-size: 18px;
-      font-weight: 500;
-      li {
-        transition: opacity .5s ease;
-        opacity: 0.71;
-        &:hover {
-          opacity: 0.9;
-        }
-      }
-      
-    }
-
-    &__list-edit-button {
-      height: 10px;
-      width: 40px;
-      margin: 30px ($side-bar-width/2 - 20px - 15px -5px); // - 1/2width - padding
-      padding: 5px 15px;
-      background-color: black;
-      color: white;
-      border: none;
-      border-radius: 3px;
-      font-weight: 700;
-      font-size: 10px;
-      cursor: pointer;
-    }
+    
   }
+
+  &__list-edit-button {
+    height: 10px;
+    width: 40px;
+    margin: 30px ($side-bar-width/2 - 20px - 15px -5px); // - 1/2width - padding
+    padding: 5px 15px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 10px;
+    cursor: pointer;
+  }
+}
 </style>

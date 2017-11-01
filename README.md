@@ -6,7 +6,6 @@ Easy simple and quick online resume/personal page. Currently under heavy develop
 
 # TODO
 
-- Common vars scss file
 - link list add + remove + edit
 - Register
 - First use tour

@@ -60,22 +60,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
-  .main-page {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: 40px;
-  }
+.main-page {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 40px;
+}
 
-  .user-not-found-container {
-    position: relative;
-    height: 80vh;
-  }
+.user-not-found-container {
+  position: relative;
+  height: 80vh;
+}
 
-  .user-not-found {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.user-not-found {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 </style>

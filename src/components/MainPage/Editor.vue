@@ -61,8 +61,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-$small-button-radius: 40px;
-$big-button-radius: 60px;
+@import 'src/vars.scss';
 
 .editor {
   position: fixed;
