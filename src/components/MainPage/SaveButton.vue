@@ -3,7 +3,7 @@
     i.text Save?
     .buttons
       i.button.fa.fa-check.check(aria-hidden="true" @click="save")
-      i.button.fa.fa-times.cross(aria-hidden="true")
+      i.button.fa.fa-times.cross(aria-hidden="true" @click="cancel")
 </template>
 
 <script>
@@ -16,6 +16,10 @@ export default {
   methods: {
     save () {
       this.$store.dispatch('saveChanges')
+    },
+    cancel () {
+      this.$store.commit('clearScheduledChanges')
+      window.location.reload(false) // this is shite and needs to go
     }
   }
 }
@@ -35,6 +39,7 @@ export default {
 .buttons {
   width: 100%;
   font-size: 20px;
+  cursor: pointer;
 
   .check {
     color: green;
