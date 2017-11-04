@@ -1,17 +1,10 @@
 <template lang="pug">
   .main
-    .overlay
-    #exit-button(@click="toggleModal") x
-    .modal 
-      h1 Edit.
+    app-modal(:value="editModalIsActive" title="Edit." @input="toggleModal" @done="finishModal")
       .modal__input-container
-        .title Title
-        input.modal__input(v-model="listInput.title" :placeholder="listData.title" ref="list")
-        .title Subtitle
-        input.modal__input(v-model="listInput.subTitle" :placeholder="listData.subTitle")
-        .title Link
-        input.modal__input(v-model="listInput.link" :placeholder="listData.link")
-      button#done-button(@click="finishModal") DONE
+        app-input(v-model="listInput.title" :placeholder="listData.title" title="Title")
+        app-input(v-model="listInput.subTitle" :placeholder="listData.subTitle" title="Subtitle")
+        app-input(v-model="listInput.link" :placeholder="listData.link" title="Link")
 </template>
 
 <script>
@@ -19,8 +12,15 @@ import { mapState } from 'vuex'
 
 import c from '@/script/constants'
 
+import AppModal from '@/components/_elements/AppModal'
+import AppInput from '@/components/_elements/AppInput'
+
 export default {
   name: 'EditModal',
+  components: {
+    AppModal,
+    AppInput
+  },
   data: function () {
     return {
       listInput: {}
@@ -30,8 +30,8 @@ export default {
     this.listInput = JSON.parse(JSON.stringify(this.listData || {})) // we don't want to pass by refrence
   },
   mounted () {
-    if (this.editModalTypeIsText) this.$refs.text.focus()
-    else this.$refs.list.focus()
+    // fix this:
+    // this.$refs.list.focus()
   },
   computed: {
     listData () {
@@ -46,12 +46,14 @@ export default {
       userPath: state => state.appState.userPath,
       editModalContentKey: state => state.appState.editModalContentKey,
       editModalEntryKey: state => state.appState.editModalEntryKey,
-      editModalTypeIsText: state => state.appState.editModalTypeIsText
+      editModalIsActive: state => state.appState.editModalIsActive
     })
   },
   methods: {
-    toggleModal () {
-      this.$store.commit('toggleEditModal')
+    toggleModal (val) {
+      this.$store.commit('setEditModal', {
+        newState: val
+      })
     },
     finishModal () {
       if (this.listInput === this.listData) {
