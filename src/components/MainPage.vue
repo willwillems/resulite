@@ -38,7 +38,7 @@ export default {
   computed: {
     userPathIsValid () {
       // this needs some... ehh.. work
-      return this.$store.state.appState.userPath
+      return !!this.$store.state.appState.userPath
     },
     changesMade () {
       return Object.keys(this.changes).length

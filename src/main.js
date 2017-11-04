@@ -17,10 +17,16 @@ Vue.config.devtools = true
 const db = fb.database()
 const auth = fb.auth()
 
-// get first url argument
-// const firstPath = window.location.pathname.split('/')[1]
-const subs = window.location.hostname.split('.')
-const subDomain = subs.length !== 1 && subs[0] // there has to be a subdomain, if so return it
+// get user from subdomain
+const hostname = window.location.hostname
+const subDomain = (function () {
+  var regexParse = new RegExp('[a-z-0-9]{2,63}.[a-z.]{2,5}$')
+  var urlParts = regexParse.exec(hostname)
+  return hostname
+    .replace(urlParts[0], '')
+    .replace('www.', '') // filters out www as subdomain
+    .slice(0, -1)
+})()
 
 /* eslint-disable no-new */
 new Vue({
