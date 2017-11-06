@@ -19,9 +19,9 @@
             val: $event.target.innerText
           })`
         ) {{e.data}}
-      div(v-else-if="e.type === 'list'")
+      .entry__list-container(v-else-if="e.type === 'list'")
         ul.entry__list(:class="{'entry__list--slimmer': editModeIsActive}")
-          li.entry__list__post(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
+          li.entry__list-post(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
             a.clickable(v-if="editModeIsActive" @click="activateEditModal(postKey, entryKey)")
               b {{post.title}}
               span
@@ -203,6 +203,10 @@ li {
     }
   }
 
+  &__list-container {
+    white-space: nowrap;
+  }
+
   &__list {
     display: inline-block;
     &--slimmer {
@@ -211,14 +215,15 @@ li {
     &--buttons {
       position: absolute;
     }
-    &__post {
-      b {
-        opacity: 0.91;
-      }
-      i {
-        opacity: 0.6;
-        font-weight: 200;
-      }
+  }
+
+  &__list-post {
+    b {
+      opacity: 0.91;
+    }
+    i {
+      opacity: 0.6;
+      font-weight: 200;
     }
   }
 }
