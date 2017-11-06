@@ -1,10 +1,20 @@
 <template lang="pug">
   .main
     div.user-section
-      img.user-section__headshot( :src="headShot.url")
+      img.user-section__headshot(
+        :src="headShotUrl"
+        :class="{'left-bar__user-headshot--drag-over': dragOver }"
+        @dragover="handleDragOver" 
+        @dragleave="handleDragLeave" 
+        @drop="handleDrop"
+        onclick="document.getElementById('photo-input').click()"
+      )
+      input(@change="uploadFile($event.target.files[0])" id="photo-input" type="file" name="photo-input" style="display: none;")
       p <!-- for spacing-->
-      b.user-section__name {{name}}
+      b.user-section__name {{name || 'John Doe'}}
     form.login(@keydown.enter.prevent="login")
+      .login__input
+        input(v-model="name" type="name" placeholder="name" required)
       .login__input
         input(v-model="email" type="email" placeholder="email" required)
       .login__input
@@ -16,31 +26,33 @@
 
 <script>
 import fb from '@/script/firebase'
+import c from '@/script/constants'
 
 // FB
 const auth = fb.auth()
+const storage = fb.storage().ref()
 
 export default {
   name: 'login-page',
   data () {
     return {
+      name: '',
       email: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      dragOver: false,
+      userImg: ''
     }
   },
   computed: {
-    name () {
-      return this.$root.user.displayName
-    },
-    headShot () {
-      return this.$root.user.headShot
+    headShotUrl () {
+      return this.userImg || '/static/img/pf-placeholder.jpeg'
     }
   },
   methods: {
     login () {
       var that = this
-      auth.signInWithEmailAndPassword(this.email, this.password)
+      auth.createUserWithEmailAndPassword(this.email, this.password)
         .then(() => {
           this.$store.commit('setLoginStatus', {
             status: true
@@ -51,6 +63,36 @@ export default {
           that.errorMessage = e.message
           console.log(e)
         })
+    },
+    handleDragOver (evt) {
+      this.dragOver = true
+      evt.stopPropagation()
+      evt.preventDefault()
+      evt.dataTransfer.dropEffect = 'copy'
+    },
+    handleDragLeave (evt) {
+      this.dragOver = false
+    },
+    handleDrop (evt) {
+      evt.stopPropagation()
+      evt.preventDefault()
+      this.dragOver = false
+      const files = evt.dataTransfer.files  // FileList object.
+      const file = files[0]                 // File     object.
+      this.uploadFile(file)
+    },
+    uploadFile (file) {
+      const _URL = window.URL || window.webkitURL
+      this.userImg = _URL.createObjectURL(file)
+      const pfStore = storage.child(`${this.$store.state.appState.uid}/${file.name}`)
+      var that = this
+      pfStore.put(file).then(function (snapshot) {
+        const url = snapshot.downloadURL
+        that.$store.commit('scheduleChange', {
+          path: `${c.DB_HEADSHOT}/${c.DB_PHOTO_URL}`,
+          newVal: url
+        })
+      })
     }
   }
 }
