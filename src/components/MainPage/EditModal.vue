@@ -1,6 +1,6 @@
 <template lang="pug">
   .main
-    app-modal(:value="editModalIsActive" title="Edit." @input="toggleModal" @done="finishModal")
+    app-modal(v-model="editModalIsActive" title="Edit." @close="closeModal" @done="finishModal")
       .modal__input-container
         app-input(v-model="listInput.title" :placeholder="listData.title" title="Title")
         app-input(v-model="listInput.subTitle" :placeholder="listData.subTitle" title="Subtitle")
@@ -43,23 +43,20 @@ export default {
         .child(this.editModalContentKey)
     },
     ...mapState({
-      userPath: state => state.appState.userPath,
       editModalContentKey: state => state.appState.editModalContentKey,
       editModalEntryKey: state => state.appState.editModalEntryKey,
       editModalIsActive: state => state.appState.editModalIsActive
     })
   },
   methods: {
-    toggleModal (val) {
+    closeModal () {
       this.$store.commit('setEditModal', {
-        newState: val
+        newState: false
       })
     },
     finishModal () {
       if (this.listInput === this.listData) {
-        this.$store.commit('setEditModal', {
-          newState: false
-        })
+        this.closeModal()
         return // nothing to see here move along
       }
       this.editDataRef
@@ -67,9 +64,7 @@ export default {
         .child(this.editModalEntryKey)
         .update(this.listInput)
         .then(() => {
-          this.$store.commit('setEditModal', {
-            newState: false
-          })
+          this.closeModal()
         })
     }
   }

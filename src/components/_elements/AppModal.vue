@@ -2,10 +2,11 @@
   div
     .overlay
     #exit-button(@click="toggleModal") x
-    .modal 
-      h1 {{title}}
-      slot
-      app-button(@click="finishModal" title="done")
+    .container
+      .modal 
+        h1 {{title}}
+        slot
+        app-button(@clicked="finishModal" title="done")
 </template>
 
 <script>
@@ -29,7 +30,7 @@ export default {
   },
   methods: {
     toggleModal () {
-      this.$emit('input', !this.value)
+      this.$emit('close')
     },
     finishModal () {
       this.$emit('done')
@@ -48,7 +49,6 @@ export default {
   height: 100vh;
   background-color: black;
   opacity: 0.71;
-
 }
 
 #exit-button {
@@ -56,19 +56,29 @@ export default {
   top: 10px;
   right: 10px;
   color: white;
+  z-index: 1;
 }
 
-.modal {
+.container {
   position: fixed;
-  top: calc(50vh - 200px);
-  left: calc(50vw - 250px);
-  width: 500px; // this should be responsive
+    height: 100%;
+    width: 100%;
+  top: 0%;
+  left: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal {
+  display: inline-block;
+  position: relative;
+  width: 400px; // this should be responsive
   max-width: 80vw;
-  // height: 400px;
   padding: 20px;
   padding-bottom: 50px; // for the edit button
   z-index: 10;
   background-color: white;
+  text-align: left;
   h1 {
     font-size: 4rem;
     margin: 20px 0px;

@@ -31,6 +31,7 @@
         v-if="editModeIsActive",
         @click="toggleLinkListModal"
       ) EDIT
+    user-link-list-edit-modal(v-model="editModalIsActive" v-if="editModalIsActive")
 </template>
 
 <script>
@@ -38,12 +39,18 @@ import { mapState } from 'vuex'
 
 import c from '@/script/constants'
 
+import UserLinkListEditModal from '@/components/MainPage/UserLinkListEditModal'
+
 export default {
   name: 'side-bar',
+  components: {
+    UserLinkListEditModal
+  },
   data () {
     return {
       dragOver: false,
-      newImg: ''
+      newImg: '',
+      editModalIsActive: false
     }
   },
   computed: {
@@ -65,7 +72,7 @@ export default {
   },
   methods: {
     toggleLinkListModal () {
-      console.log('link list modal not built yet :)')
+      this.editModalIsActive = !this.editModalIsActive
     },
     handleDragOver (evt) {
       this.dragOver = true

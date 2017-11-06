@@ -1,6 +1,7 @@
 
 <template lang="pug">
   button.button(
+    @click="clicked"
     :style="`background-color: ${color};`"
     :class="{'inactive': !active}"
   ) {{uppercaseTitle}}
@@ -29,6 +30,9 @@ export default {
     }
   },
   methods: {
+    clicked () {
+      this.$emit('clicked')
+    }
   }
 }
 </script>

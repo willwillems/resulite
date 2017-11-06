@@ -2,8 +2,8 @@
   .input-container
     .input-container__title(v-if="title") {{title}}
     input.input-container__input(
-      v-bind:value="value"
-      v-on:input="sync" 
+      :value="value"
+      @input="sync($event.target.value)" 
       :placeholder="placeholder" 
       ref="list"
     )

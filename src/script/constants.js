@@ -1,6 +1,8 @@
 export default {
   DB_PAGEDATA: 'pageData',
   DB_CONTENTLIST: 'contentList',
+  DB_LINKLIST: 'externalLinks',
+  DB_LINKLIST_LIST: 'linkList',
   DB_ENTRY_TEXT: 'text',
   DB_ENTRY_LIST: 'list',
   DB_DATA_ATTR: 'data',
