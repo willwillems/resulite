@@ -74,11 +74,13 @@ export default {
   position: relative;
   width: 400px; // this should be responsive
   max-width: 80vw;
+  max-height: 80vh;
   padding: 20px;
   padding-bottom: 50px; // for the edit button
   z-index: 10;
   background-color: white;
   text-align: left;
+  overflow-y: scroll;
   h1 {
     font-size: 4rem;
     margin: 20px 0px;
