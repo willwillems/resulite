@@ -1,6 +1,6 @@
 <template lang="pug">
   .main-content
-    .entry(v-for="(e, postKey, i) in content" v-if="e")
+    .entry(v-for="(e, postKey, i) in content" v-if="e" :key="postKey")
       h1.entry__title
         span(
           :contenteditable="editModeIsActive" 
@@ -21,7 +21,7 @@
         ) {{e.data}}
       .entry__list-container(v-else-if="e.type === 'list'")
         ul.entry__list(:class="{'entry__list--slimmer': editModeIsActive}")
-          li.entry__list-post(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
+          li.entry__list-post(v-for="(post, entryKey, i) in firstTenList(e.data)" :key="entryKey" v-if="post")
             a.clickable(v-if="editModeIsActive" @click="activateEditModal(postKey, entryKey)")
               b {{post.title}}
               span
@@ -34,7 +34,7 @@
               i {{post.subTitle}}
         // make list smaller when edit mode is active
         ul.entry__list.entry__list--buttons(v-if="editModeIsActive")
-          li(v-for="(post, entryKey, i) in firstTenList(e.data)", v-if="post")
+          li(v-for="(post, entryKey, i) in firstTenList(e.data)" :key="entryKey" v-if="post")
             .icon-container(v-if="editModeIsActive")
               i.fa.fa-trash.edit-icon.clickable(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
