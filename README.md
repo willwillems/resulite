@@ -6,7 +6,7 @@ Easy simple and quick online resume/personal page. Currently under heavy develop
 
 # TODO
 
-- link list add + remove + edit
+- Progress bar around photo when uploading
 - Register
 - First use tour
 - Add photo icon overlay in edit mode
