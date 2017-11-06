@@ -12,12 +12,16 @@ export default {
     editModalEntryKey: '',
     editModalTypeIsText: true,
     userPath: '',
+    uid: '',
     userIsLoggedIn: false,
     scheduledChanges: {}
   },
   mutations: {
     setUserPath (state, {path}) {
       state.userPath = path
+    },
+    setUID (state, {uid}) {
+      state.uid = uid
     },
     toggleEditMode (state) {
       state.editModeIsActive = !state.editModeIsActive

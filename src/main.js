@@ -63,6 +63,9 @@ new Vue({
         that.$store.commit('setLoginStatus', {
           status: true
         })
+        that.$store.commit('setUID', {
+          uid: user.uid
+        })
       }
     })
   }

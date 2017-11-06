@@ -1,11 +1,19 @@
 <template lang="pug">
   .left-bar
     img.left-bar__user-headshot(
+      v-if="!editModeIsActive"
+      :src="newImg || headShot.url" 
+    )
+    img.left-bar__user-headshot(
+      v-else
       :src="newImg || headShot.url" 
       :class="{'left-bar__user-headshot--drag-over': dragOver }"
       @dragover="handleDragOver" 
       @dragleave="handleDragLeave" 
-      @drop="handleDrop")
+      @drop="handleDrop"
+      onclick="document.getElementById('photo-input').click()"
+    )
+    input(@change="uploadFile($event.target.files[0])" id="photo-input" type="file" name="photo-input" style="display: none;")
     p <!-- for spacing-->
       div
         b.left-bar__user-name(
@@ -38,8 +46,11 @@
 import { mapState } from 'vuex'
 
 import c from '@/script/constants'
+import fb from '@/script/firebase'
 
 import UserLinkListEditModal from '@/components/MainPage/UserLinkListEditModal'
+
+const storage = fb.storage().ref()
 
 export default {
   name: 'side-bar',
@@ -89,10 +100,20 @@ export default {
       this.dragOver = false
       const files = evt.dataTransfer.files  // FileList object.
       const file = files[0]                 // File     object.
+      this.uploadFile(file)
+    },
+    uploadFile (file) {
       const _URL = window.URL || window.webkitURL
       this.newImg = _URL.createObjectURL(file)
-      console.log(file)
-      // TODO: upload file to FB
+      const pfStore = storage.child(`${this.$store.state.appState.uid}/${file.name}`)
+      var that = this
+      pfStore.put(file).then(function (snapshot) {
+        const url = snapshot.downloadURL
+        that.$store.commit('scheduleChange', {
+          path: `${c.DB_HEADSHOT}/${c.DB_PHOTO_URL}`,
+          newVal: url
+        })
+      })
     },
     scheduleChange ({attr, val}) {
       this.$store.commit('scheduleChange', {
@@ -175,7 +196,7 @@ a {
     width: 40px;
     margin: 30px ($side-bar-width/2 - 20px - 15px -5px); // - 1/2width - padding
     padding: 5px 15px;
-    background-color: black;
+    background-color:#2c2c2c;
     color: white;
     border: none;
     border-radius: 3px;

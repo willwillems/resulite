@@ -17,7 +17,7 @@ export default {
     },
     color: {
       type: String,
-      default: 'black'
+      default: '#2c2c2c'
     },
     active: {
       type: Boolean,
@@ -44,11 +44,12 @@ export default {
   bottom: 15px;
   right: 15px;
   padding: 5px 20px;
-  // background-color: black;
   color: white;
   border: none;
-  font-weight: 500;
   border-radius: 3px;
+  font-weight: 700;
+  font-size: 10px;
+  cursor: pointer;
   &.inactive {
     opacity: 0.71;
   }

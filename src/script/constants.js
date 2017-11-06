@@ -8,6 +8,8 @@ export default {
   DB_DATA_ATTR: 'data',
   DB_NAME_ATTR: 'displayName',
   DB_BIO_ATTR: 'shortBio',
+  DB_HEADSHOT: 'headShot',
+  DB_PHOTO_URL: 'url',
   FIREBASE_CONFIG: {
     apiKey: 'AIzaSyDjeoHIwrAudOkku5A4ckMqg_Zv2ZIGDT4',
     authDomain: 'resulite.firebaseapp.com',

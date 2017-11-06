@@ -1,14 +1,21 @@
 <template lang="pug">
   .snackbar
-    i.text Save?
     .buttons
-      i.button.fa.fa-check.check(aria-hidden="true" @click="save")
-      i.button.fa.fa-times.cross(aria-hidden="true" @click="cancel")
+      app-button(title="commit changes" @clicked="save").check
+      app-button(title="discard" @clicked="cancel").cross
+      //
+        i.button.fa.fa-check.check(aria-hidden="true" @click="save")
+        i.button.fa.fa-times.cross(aria-hidden="true" @click="cancel")
 </template>
 
 <script>
+import AppButton from '@/components/_elements/AppButton'
+
 export default {
   name: 'save-button',
+  components: {
+    AppButton
+  },
   data: function () {
     return {
     }
@@ -29,24 +36,28 @@ export default {
 <style lang="scss" scoped>
 .snackbar {
   position: fixed;
-  top: 30px;
-  right: 50px;
+  top: 15px;
+  right: 20px;
   max-width: 100vw;
   //width: 100px;
   //height: 50px;
 }
 
+.text {
+  opacity: 0.9;
+}
+
 .buttons {
   width: 100%;
-  font-size: 20px;
-  cursor: pointer;
 
   .check {
-    color: green;
+    position: unset;
+    margin: 0px 10px 10px 0px;
     float: left;
   }
   .cross {
-    color: red;
+    position: unset;  
+    margin: 0px 0px 10px 10px;
     float: right;
   }
 }
