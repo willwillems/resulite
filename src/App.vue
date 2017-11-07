@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <main>
-      <router-view v-if="true"></router-view>
-      <landing-page v-else-if="false"></landing-page>
+      <!-- Yes this is a very dubious approach... -->
+      <router-view v-if="$store.state.appState.userPath"></router-view>
+      <landing-page v-else></landing-page>
     </main>
   </div>
 </template>

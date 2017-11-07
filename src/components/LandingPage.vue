@@ -13,7 +13,8 @@
         li How does it look?
         li Why do I need it?
         li Another platform?
-        li Give us a shot!
+        li 
+          b(@click="register") Give us a shot!
 </template>
 
 <script>
@@ -34,6 +35,9 @@ export default {
     }
   },
   methods: {
+    register () {
+      window.location.href = 'https://beta.resulite.com/register'
+    }
   }
 }
 </script>
@@ -88,6 +92,9 @@ export default {
     display: inline; // horizontal list
     margin: 0px 10px;
     font-weight: 500;
+    &:hover {
+      color: black;
+    }
   }
 }
 
