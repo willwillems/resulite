@@ -2,7 +2,7 @@
   <div id="app">
     <main>
       <!-- Yes this is a very dubious approach... -->
-      <router-view v-if="$store.state.appState.userPath"></router-view>
+      <router-view v-if="$store.state.appState.userPath && $store.state.appState.userPath !== 'www'"></router-view>
       <landing-page v-else></landing-page>
     </main>
   </div>
