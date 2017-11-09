@@ -5,7 +5,7 @@
 An easy, simple and quick online resume/personal page. Currently under heavy development but feel free to [sign up](https://beta.resulite.com/register) or contribute!
 
 # 👱 Example:
-You can check out my personal resulite page @ https://rutger.resulite.com though it is also available trough https://rugerwillems.com which is how I recommend you set it up too (trough an iFrame, most hosting providers offer this option for free).  
+You can check out my personal resulite page @ https://rutger.resulite.com though it is also available trough rutgerwillems.com which is how I recommend you set it up too (trough an iFrame, most hosting providers offer this option for free).  
 
 # 🔧 TODO:
 
