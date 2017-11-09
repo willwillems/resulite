@@ -75,7 +75,7 @@ export default {
       return this.$root.user.shortBio
     },
     externalLinks () {
-      return this.$root.user.externalLinks.linkList
+      return this.$root.user.externalLinks ? this.$root.user.externalLinks.linkList : []
     },
     ...mapState({
       editModeIsActive: state => state.appState.editModeIsActive

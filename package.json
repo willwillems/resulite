@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "firebase": "^4.6.1",
+    "firebase-tools": "^3.14.0",
     "node-sass": "^4.5.3",
     "pug": "^2.0.0-rc.2",
     "sass-loader": "^6.0.6",

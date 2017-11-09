@@ -16,7 +16,7 @@ import AppModal from '@/components/_elements/AppModal'
 import AppInput from '@/components/_elements/AppInput'
 
 export default {
-  name: 'EditModal',
+  name: 'user-link-list-edit-modal',
   props: {
     value: {
       type: Boolean,
@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     linkList () {
-      return this.$root.user[c.DB_LINKLIST][c.DB_LINKLIST_LIST]
+      return this.$root.user[c.DB_LINKLIST] ? this.$root.user[c.DB_LINKLIST][c.DB_LINKLIST_LIST] : []
     },
     editDataRef () {
       return this.$root.$firebaseRefs.user

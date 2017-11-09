@@ -12,15 +12,18 @@
       input(@change="uploadFile($event.target.files[0])" id="photo-input" type="file" name="photo-input" style="display: none;")
       p <!-- for spacing-->
       b.user-section__name {{name || 'John Doe'}}
-    form.login(@keydown.enter.prevent="login")
-      .login__input
+      i.user-section__subdomain https://{{subDomain || 'my-subdomain'}}.resulite.com
+    form.register(@keydown.enter.prevent="register")
+      .register__input
         input(v-model="name" type="name" placeholder="name" required)
-      .login__input
+      .register__input
+        input(v-model="subDomain" type="subdomain" placeholder="subdomain" required)
+      .register__input
         input(v-model="email" type="email" placeholder="email" required)
-      .login__input
+      .register__input
         input(v-model="password" type="password" placeholder="password" required)
-        a(@click.prevent="login")
-          i.fa.fa-arrow-right.login__input__button
+        a(@click.prevent="register")
+          i.fa.fa-arrow-right.register__input__button
     i.error-message(v-if="errorMessage") {{errorMessage}}
 </template>
 
@@ -30,18 +33,21 @@ import c from '@/script/constants'
 
 // FB
 const auth = fb.auth()
+const db = fb.database()
 const storage = fb.storage().ref()
 
 export default {
-  name: 'login-page',
+  name: 'register-page',
   data () {
     return {
       name: '',
+      subDomain: '',
       email: '',
       password: '',
       errorMessage: '',
       dragOver: false,
-      userImg: ''
+      userImg: '',
+      photoUrl: ''
     }
   },
   computed: {
@@ -50,14 +56,27 @@ export default {
     }
   },
   methods: {
-    login () {
+    register () {
+      if (!this.photoUploadIsDone) {
+        this.errorMessage = 'Your pic is still uploading please retry in a sec'
+        return
+      }
       var that = this
       auth.createUserWithEmailAndPassword(this.email, this.password)
-        .then(() => {
+        .then((user) => {
           this.$store.commit('setLoginStatus', {
             status: true
           })
-          this.$router.push({ path: '/' })
+          return db.ref(`/${c.DB_USERS_PATH}/${user.uid}`).set({
+            name: this.name,
+            photoUrl: this.photoUrl,
+            subDomain: this.subDomain
+          })
+        })
+        .then(() => {
+          // redirect user to his new page
+          window.location.href = `http://${this.subDomain}.resulite.com/` // this.subDomain could be changed inbetween promises
+          // this.$router.push({ path: '/' })
         })
         .catch(function (e) {
           that.errorMessage = e.message
@@ -86,12 +105,10 @@ export default {
       this.userImg = _URL.createObjectURL(file)
       const pfStore = storage.child(`${this.$store.state.appState.uid}/${file.name}`)
       var that = this
+      that.photoUploadIsDone = false
       pfStore.put(file).then(function (snapshot) {
-        const url = snapshot.downloadURL
-        that.$store.commit('scheduleChange', {
-          path: `${c.DB_HEADSHOT}/${c.DB_PHOTO_URL}`,
-          newVal: url
-        })
+        that.photoUrl = snapshot.downloadURL
+        that.photoUploadIsDone = true
       })
     }
   }
@@ -122,6 +139,11 @@ export default {
     }
   }
 
+  &__subdomain {
+    display: block;
+    font-weight: 300;
+  }
+
   &__headshot {
     display: inline-block;
     width: $headshot-diameter;
@@ -134,7 +156,7 @@ export default {
   }
 }
 
-.login {
+.register {
   // width: $login-input-width;
   &__input {
     position: relative;

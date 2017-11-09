@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 
 import fb from '@/script/firebase'
+import c from '@/script/constants'
 
 // explicit installation required in module environments
 Vue.use(VueFire)
@@ -40,7 +41,7 @@ new Vue({
     // anArray: db.ref('url/to/my/collection').limitToLast(25)
     // full syntax
     user: {
-      source: db.ref(`${subDomain}/pageData`),
+      source: db.ref(`${c.DB_ROOT_USER_PATH}/${subDomain}/${c.DB_PAGEDATA}`),
       // optionally bind as an object
       asObject: true,
       // optionally provide the cancelCallback

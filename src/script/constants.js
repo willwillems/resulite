@@ -1,4 +1,6 @@
 export default {
+  DB_ROOT_USER_PATH: 'pages',
+  DB_USERS_PATH: 'users',
   DB_PAGEDATA: 'pageData',
   DB_CONTENTLIST: 'contentList',
   DB_LINKLIST: 'externalLinks',

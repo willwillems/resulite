@@ -1,14 +1,26 @@
 {
   "rules": {
-    "$id": {
-      "pageData": {
-        ".read": "true",
-        ".write": "auth.uid == root.child($id).child('uid').val()"
-      },
-      "$other": {
-        ".read": "auth.uid == root.child($id).child('uid').val()",
-        ".write": "auth.uid == root.child($id).child('uid').val()"
+    "pages": {
+      "$id": {
+        "pageData": {
+          ".read": "true",
+          ".write": "auth.uid === root.child('pages').child($id).child('uid').val()"
+        },
+        "$other": {
+          ".read": "auth.uid === root.child('pages').child($id).child('uid').val()",
+          ".write": "auth.uid === root.child('pages').child($id).child('uid').val()"
+        }
       }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth.uid == $uid",
+        ".write": "auth.uid == $uid"
+      }
+    },
+    "$other": {
+      ".read": "true",
+      ".write": "false"
     }
   }
 }
