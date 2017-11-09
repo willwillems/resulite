@@ -47,7 +47,8 @@ export default {
       errorMessage: '',
       dragOver: false,
       userImg: '',
-      photoUrl: ''
+      photoUrl: '',
+      photoUploadIsDone: true
     }
   },
   computed: {
