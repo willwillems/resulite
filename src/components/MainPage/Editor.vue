@@ -42,18 +42,13 @@ export default {
     },
     addText () {
       // create new blank entry en store key in var
-      const postKey = this.$root.$firebaseRefs.user
+      this.$root.$firebaseRefs.user
         .child(c.DB_CONTENTLIST)
         .push({
           title: 'new text',
           data: '',
           type: c.DB_ENTRY_TEXT
-        }).key
-      // open edit modal with new entry
-      this.$store.commit('setEditModal', {
-        newState: true,
-        postKey
-      })
+        })
     }
   }
 }
