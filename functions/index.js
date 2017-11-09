@@ -17,7 +17,7 @@ exports.createUserPage = functions.database.ref('/users/{uid}/')
       .database()
       .ref(`/pages/${subDomain}`)
       .once('value', function (snapshot) {
-        subDomainExists = (snapshot.val() !== null)
+        subDomainExists = (snapshot.val() !== null) // snapshot.exists() might be cleaner
       })
       .then(() => {
         if (subDomainExists) return
