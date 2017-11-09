@@ -2,6 +2,7 @@
   .main
     .brand-container
       img#logo(src="static/img/logo.svg")
+      .spacer
       #name Resulite
     .subtext-container
       #subtext
@@ -58,19 +59,31 @@ export default {
 .brand-container {
   margin-top: 100px;
   text-align: center;
-  & > * {
-    display: inline-block;
+  @media only screen and (min-width: 480px) {
+    white-space: nowrap;
+    & > * {
+      display: inline-block;
+    }
+  }
+
+  #logo {
+    height: 7rem;
+  }
+
+  .spacer {
+    width: 30px;
+    @media only screen and (max-width: 480px) {
+      display: none;
+    }
   }
 
   #name {
     font-size: 10rem;
     font-weight: 500;
     margin-bottom: -15px; // to pull the subtext closer
-  }
-
-  #logo {
-    height: 7rem;
-    margin-right: 30px;
+    @media only screen and (max-width: 480px) {
+      font-size: 5rem;
+    }
   }
 }
 
@@ -79,6 +92,9 @@ export default {
   font-size: 2rem;
   font-weight: 100;
   font-style: italic;
+  @media only screen and (max-width: 480px) {
+    font-size: 1rem;
+  }
   #subtext {
     position: absolute; // this is centred this way to be able to to the live typing
     left: 34vw;
@@ -88,10 +104,24 @@ export default {
 }
 
 #menu {
+  ul {
+    @media only screen and (max-width: 480px) {
+      padding: 0px;
+    }
+  }
+
   li {
     display: inline; // horizontal list
     margin: 0px 10px;
     font-weight: 500;
+    text-align: center;
+
+    @media only screen and (max-width: 480px) {
+      display: list-item;
+      list-style-type: none;
+      padding: 5px;
+    }
+
     &:hover {
       color: black;
     }
