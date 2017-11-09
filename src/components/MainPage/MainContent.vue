@@ -10,6 +10,7 @@
             val: $event.target.innerText
           })`
         ) {{e.title}}
+        i.fa.fa-times-circle.entry__title-delete-icon(v-if="editModeIsActive" @click="deletePost(postKey)")
       .entry__text-container(v-if="e.type === 'text'")
         p(
           :contenteditable="editModeIsActive"
@@ -112,11 +113,11 @@ export default {
       })
     },
     deletePost (postKey) {
+      if (!window.confirm('Delete?')) return
       this.$root.$firebaseRefs.user
         .child(c.DB_CONTENTLIST)
         .child(postKey)
         .remove()
-      // open edit modal with new entry
     },
     scheduleChange ({postKey, attr, val}) {
       this.$store.commit('scheduleChange', {
@@ -195,6 +196,15 @@ li {
     }
   }
 
+  &__title-delete-icon {
+    padding: 0px 10px;
+    font-size: 0.7em;
+    color:#9aa4ad;
+    &:hover {
+      color: $delete-button-hover-color;
+    }
+  }
+
   &__text-container {
     width: $lists-width;
     p:focus { 
@@ -236,7 +246,7 @@ li {
   display: inline-block;
   margin: 0px 5px;
   &:hover {
-    color: #fc4f4f;
+    color: $delete-button-hover-color;
   }
 }
 
