@@ -9,27 +9,40 @@ exports.createUserPage = functions.database.ref('/users/{uid}/')
     const { subDomain, photoUrl, name } = event.data.val()
     const uid = event.auth.variable ? event.auth.variable.uid : null
     console.log('Data: ', subDomain, photoUrl, name, uid)
+    // Check if event was stated by an authenticated user:
     if (!uid) return
-    // return promise
+    // Check if subdomain already exists:
+    var subDomainExists
     return admin
       .database()
       .ref(`/pages/${subDomain}`)
-      .set({
-        'pageData': {
-          'contentList': {
+      .once('value', function (snapshot) {
+        subDomainExists = (snapshot.val() !== null)
+      })
+      .then(() => {
+        if (subDomainExists) return
+        // All good create entry
+        console.info(`Creating new '${subDomain}' subdomain for mr. ${name}`)
+        return admin
+        .database()
+        .ref(`/pages/${subDomain}`)
+        .set({
+          'pageData': {
+            'contentList': {
 
-          },
-          'displayName': name,
-          'externalLinks': {
-            'linkList': [
+            },
+            'displayName': name,
+            'externalLinks': {
+              'linkList': [
 
-            ]
+              ]
+            },
+            'headShot': {
+              'url': photoUrl
+            },
+            'shortBio': ''
           },
-          'headShot': {
-            'url': photoUrl
-          },
-          'shortBio': ''
-        },
-        'uid': uid
+          'uid': uid
+        })
       })
   })
