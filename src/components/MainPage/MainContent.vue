@@ -37,7 +37,7 @@
         ul.entry__list.entry__list--buttons(v-if="editModeIsActive")
           li(v-for="(post, entryKey, i) in firstTenList(e.data)" :key="entryKey" v-if="post")
             .icon-container(v-if="editModeIsActive")
-              i.fa.fa-trash.edit-icon.clickable(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
+              i.fa.fa-trash-o.edit-icon.clickable(@click="deleteEntry(postKey, entryKey)" aria-hidden="true")
         a(v-if="remainingListLenght(e.data)", href="/") click for {{remainingListLenght(e.data)}} more
         .add-entry(v-if="editModeIsActive" @click="addListEntry(postKey)")
           i.fa.fa-plus.clickable
@@ -197,8 +197,9 @@ li {
   }
 
   &__title-delete-icon {
-    padding: 0px 10px;
-    font-size: 0.7em;
+    vertical-align: top;
+    padding: 10px;
+    font-size: 14px;
     color:#9aa4ad;
     &:hover {
       color: $delete-button-hover-color;
