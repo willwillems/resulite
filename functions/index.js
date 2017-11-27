@@ -29,18 +29,27 @@ exports.createUserPage = functions.database.ref('/users/{uid}/')
         .set({
           'pageData': {
             'contentList': {
-
+              'bdjs6': {
+                'data': 'This is a demo text!',
+                'date': Date.now(),
+                'order': 0,
+                'title': 'Introduction',
+                'type': 'text'
+              }
             },
             'displayName': name,
             'externalLinks': {
               'linkList': [
-
+                {
+                  'link': 'mailto:your@email.com',
+                  'text': 'Contact'
+                }
               ]
             },
             'headShot': {
               'url': photoUrl
             },
-            'shortBio': ''
+            'shortBio': 'Your Bio here'
           },
           'uid': uid
         })
