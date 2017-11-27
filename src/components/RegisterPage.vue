@@ -1,29 +1,34 @@
 <template lang="pug">
   .main
     div.user-section
-      img.user-section__headshot(
-        :src="headShotUrl"
-        :class="{'left-bar__user-headshot--drag-over': dragOver }"
-        @dragover="handleDragOver" 
-        @dragleave="handleDragLeave" 
-        @drop="handleDrop"
-        onclick="document.getElementById('photo-input').click()"
-      )
-      input(@change="uploadFile($event.target.files[0])" id="photo-input" type="file" name="photo-input" style="display: none;")
+      div(style="position: relative")
+        img.user-section__headshot(
+          :src="headShotUrl"
+          :class="{'left-bar__user-headshot--drag-over': dragOver }"
+          @dragover="handleDragOver" 
+          @dragleave="handleDragLeave" 
+          @drop="handleDrop"
+          onclick="document.getElementById('photo-input').click()"
+        )
+        span.popover(v-if="userIsRegistered") Click or drag to upload your own pic!
+        input(@change="uploadFile($event.target.files[0])" id="photo-input" type="file" name="photo-input" style="display: none;")
       p <!-- for spacing-->
       b.user-section__name {{name || 'John Doe'}}
       i.user-section__subdomain https://{{subDomain || 'my-subdomain'}}.resulite.com
-    form.register(@keydown.enter.prevent="register")
-      .register__input
-        input(v-model="name" type="name" placeholder="name" required)
-      .register__input
-        input(v-model="subDomain" type="subdomain" placeholder="subdomain" required)
-      .register__input
-        input(v-model="email" type="email" placeholder="email" required)
-      .register__input
-        input(v-model="password" type="password" placeholder="password" required)
-        a(@click.prevent="register")
-          i.fa.fa-arrow-right.register__input__button
+    form.register(@keydown.enter.prevent="next")
+      div(v-if="userIsRegistered")
+        .register__input
+          input(v-model="name" type="name" placeholder="name" required)
+        .register__input
+          input(v-model="subDomain" type="subdomain" placeholder="subdomain" required)
+        button.register__submit-button(@click.prevent="createSub")
+      div(v-else)
+        .register__input
+          input(v-model="email" type="email" placeholder="email" required)
+        .register__input
+          input(v-model="password" type="password" placeholder="password" required)
+          a(@click.prevent="register")
+            i.fa.fa-arrow-right.register__input__button
     i.error-message(v-if="errorMessage") {{errorMessage}}
 </template>
 
@@ -48,7 +53,9 @@ export default {
       dragOver: false,
       userImg: '',
       photoUrl: '',
-      photoUploadIsDone: true
+      photoUploadIsDone: true,
+      userIsRegistered: false,
+      subExistsMessage: 'sorry this subdomain is already taken'
     }
   },
   computed: {
@@ -57,32 +64,78 @@ export default {
     }
   },
   methods: {
+    next () {
+      // triggerd by enter button
+      if (!this.userIsRegistered) this.register()
+      else this.createSub()
+    },
     register () {
-      if (!this.photoUploadIsDone) {
-        this.errorMessage = 'Your pic is still uploading please retry in a sec'
-        return
-      }
       var that = this
       auth.createUserWithEmailAndPassword(this.email, this.password)
         .then((user) => {
-          this.$store.commit('setLoginStatus', {
-            status: true
-          })
+          that.userIsRegistered = true
+          that.$store.commit('setLoginStatus', {status: true})
+          that.$store.commit('setUID', {uid: user.uid})
           return db.ref(`/${c.DB_USERS_PATH}/${user.uid}`).set({
-            name: this.name,
-            photoUrl: this.photoUrl,
-            subDomain: this.subDomain
+            registered: Date.now()
           })
         })
-        .then(() => {
-          // redirect user to his new page
-          window.location.href = `http://${this.subDomain}.resulite.com/` // this.subDomain could be changed inbetween promises
-          // this.$router.push({ path: '/' })
+        .catch(function (e) {
+          if (e.code === 'auth/email-already-in-use') {
+            that.login(that.email, that.password)
+            return
+          }
+          that.errorMessage = e.message
+          console.log(e)
+        })
+    },
+    login (email, password) {
+      var that = this
+      auth.signInWithEmailAndPassword(email, password)
+        .then((user) => {
+          that.userIsRegistered = true
+          that.$store.commit('setLoginStatus', {status: true})
+          that.$store.commit('setUID', {uid: user.uid})
         })
         .catch(function (e) {
           that.errorMessage = e.message
           console.log(e)
         })
+    },
+    createSub () {
+      var that = this
+      return this.checkIfSubExists(this.subDomain)
+        .then(exists => {
+          if (exists) throw new Error(this.subExistsMessage)
+          else db.ref(`/${c.DB_USERS_PATH}/${this.$store.state.appState.uid}`).set({
+            name: that.name,
+            photoUrl: that.photoUrl,
+            subDomain: that.subDomain
+          })
+        })
+        .then(this.redirectToPersonalPage)
+        .catch(e => {
+          console.log(e, e.code)
+          if (e === this.subExistsMessage || e.code === 'PERMISSION_DENIED') {
+            this.errorMessage = this.subExistsMessage
+            return
+          }
+          this.errorMessage = e.message
+        })
+    },
+    redirectToPersonalPage () {
+      // redirect user to his new page
+      console.log('redirecting to personal page')
+      window.location.href = `http://${this.subDomain}.resulite.com/` // this.subDomain could be changed inbetween promises
+      // this.$router.push({ path: '/' })
+    },
+    checkIfSubExists (sub) {
+      return db
+        .ref(`/${c.DB_ROOT_USER_PATH}`)
+        .child(sub)
+        .child(c.DB_PAGEDATA)
+        .once('value')
+        .then(dataSnapshot => Promise.resolve(dataSnapshot.exists()))
     },
     handleDragOver (evt) {
       this.dragOver = true
@@ -186,5 +239,31 @@ export default {
 .error-message {
   opacity: 0.71;
   text-align: center;
+}
+
+.popover {
+  background-color: rgba(0,0,0,0.85);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  color: #fff;
+  padding: 7px 10px;
+  position: absolute;
+  top: $headshot-diameter / 2;
+  right: -200px;
+  width: 200px;
+  z-index: 4;
+  font-size: 12px;
+  
+  &:before {
+      border-right: 7px solid rgba(0,0,0,0.85);
+      border-bottom: 7px solid transparent;
+      border-top: 7px solid transparent;
+      left: -7px;
+      content: '';
+      display: block;
+      top: 50%;
+      margin-top: -7px;
+      position: absolute;
+    }
 }
 </style>
