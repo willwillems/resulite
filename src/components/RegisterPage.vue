@@ -107,11 +107,13 @@ export default {
       return this.checkIfSubExists(this.subDomain)
         .then(exists => {
           if (exists) throw new Error(this.subExistsMessage)
-          else db.ref(`/${c.DB_USERS_PATH}/${this.$store.state.appState.uid}`).set({
-            name: that.name,
-            photoUrl: that.photoUrl,
-            subDomain: that.subDomain
-          })
+          else {
+            db.ref(`/${c.DB_USERS_PATH}/${this.$store.state.appState.uid}`).set({
+              name: that.name,
+              photoUrl: that.photoUrl,
+              subDomain: that.subDomain
+            })
+          }
         })
         .then(this.redirectToPersonalPage)
         .catch(e => {
