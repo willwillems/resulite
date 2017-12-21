@@ -46,7 +46,7 @@ export default {
       // This might look akward but cannot set prop direct cuz not reactive
       state.scheduledChanges = {
         ...state.scheduledChanges,
-        [`${state.userPath}/${c.DB_PAGEDATA}/${path}`]: newVal
+        [`${c.DB_ROOT_USER_PATH}/${state.userPath}/${c.DB_PAGEDATA}/${path}`]: newVal
       }
     },
     clearScheduledChanges (state) {
