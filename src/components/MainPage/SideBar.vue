@@ -181,11 +181,16 @@ a {
   &__user-links-list {
     font-size: 18px;
     font-weight: 500;
-    li {
+    li a {
       transition: opacity .5s ease;
       opacity: 0.71;
+      // contact links
+      &[href^="mailto:"] {
+      opacity: 0.9
+      }
+
       &:hover {
-        opacity: 0.9;
+        opacity: 1;
       }
     }
     
