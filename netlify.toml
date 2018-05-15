@@ -1,6 +1,11 @@
-# The following redirect is intended for use with most SPA's that handles routing internally.
+# Unfortunatly since we still want access to the manifest, the app fundle etc. we cannot use '/*'
 [[redirects]]
-  from = "/*"
+  from = "/login"
+  to = "/index.html"
+  status = 200
+  force = true # Ensure that we always redirect
+[[redirects]]
+  from = "/register"
   to = "/index.html"
   status = 200
   force = true # Ensure that we always redirect
