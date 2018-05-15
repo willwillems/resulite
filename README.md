@@ -3,7 +3,7 @@
 An easy, simple and quick online resume/personal page. Currently under heavy development but feel free to [sign up](https://beta.resulite.com/register) or contribute!
 
 # 👱 Example:
-You can check out my personal resulite page @ https://rutger.resulite.com though it is also available trough rutgerwillems.com which is how I recommend you set it up too (trough an iFrame, most hosting providers offer this option for free).  
+You can check out my personal resulite page @ https://rutger.resulite.com though one could also make it available through a custom domain which is what I recommend. 
 
 # 🔧 TODO:
 
@@ -13,7 +13,7 @@ You can check out my personal resulite page @ https://rutger.resulite.com though
 - [ ] Use pre-render SPA to make static version of page which is then served on '/'
 
 ## 🚧 Build Setup:
-So you want to mess around with this project, cool! Setting it up is super easy!
+So you want to mess around with this project, cool! Setting it up is super easy! When deploying this app should be used in combination with a wildcard certificate which has become available through Let's Encrypt when they introduced ACMEv2 in March 2018.
 ``` bash
 # install dependencies
 yarn
