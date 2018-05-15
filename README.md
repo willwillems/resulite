@@ -1,7 +1,5 @@
 ![Resulite](https://i.imgur.com/ccyTXM5.png)
 
-[![Build Status](https://travis-ci.org/NickolasBoyer/resulite.svg?branch=master)](https://travis-ci.org/NickolasBoyer/resulite)
-
 An easy, simple and quick online resume/personal page. Currently under heavy development but feel free to [sign up](https://beta.resulite.com/register) or contribute!
 
 # 👱 Example:
@@ -12,6 +10,7 @@ You can check out my personal resulite page @ https://rutger.resulite.com though
 - [ ] Progress bar around photo when uploading
 - [ ] First use tour
 - [ ] Add photo icon overlay in edit mode
+- [ ] Use pre-render SPA to make static version of page which is then served on '/'
 
 ## 🚧 Build Setup:
 So you want to mess around with this project, cool! Setting it up is super easy!
